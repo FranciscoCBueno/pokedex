@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { PokemonCard } from "../components/PokemonCard.tsx";
 
-interface PokemonData {
+export interface PokemonData {
     id: number;
     name: string;
     types: [{
@@ -19,7 +19,7 @@ interface PokemonData {
     };
 }
 
-export interface PokemonList {
+interface PokemonList {
     PokemonData: PokemonData[];
 }
 
@@ -45,7 +45,10 @@ export function Home() {
 
     return (
         <div className="home-container">
-            {pokemonList ? (<PokemonCard pokemonList={pokemonList} />) : (<p>Loading Pokedex...</p>)}
+            <div className="card_list">
+                {pokemonList ? (pokemonList.PokemonData.map((pokemon) => (<PokemonCard pokemonData={pokemon}/>))) 
+                : (<p>Loading Pokedex...</p>)}
+            </div>
         </div>
     );
 }
