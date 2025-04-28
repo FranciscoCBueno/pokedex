@@ -3,9 +3,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { PokemonCard } from "../components/PokemonCard.tsx";
 import { PokemonData } from "../types/PokemonData.ts";
+import { useNavigate } from "react-router-dom";
 
 export function Home() {
     const [pokemonList, setPokemonList] = useState<PokemonData[]>([]);
+    const navigate = useNavigate();
 
     const fetchPokemonData = async () => {
         for (let i = 1; i <= 1025; i++) {
@@ -26,7 +28,7 @@ export function Home() {
         <div className="home-container">
             <div className="card_list">
                 {pokemonList.length > 0 ? (
-                    pokemonList.map((pokemon) => (<PokemonCard key={pokemon.id} pokemonData={pokemon} />))
+                pokemonList.map((pokemon) => (<PokemonCard key={pokemon.id} pokemonData={pokemon} onClick={() => navigate(`/pokemon/${pokemon.id}`)}/>))
                 ) : (<p>Loading Pokedex...</p>)}
             </div>
         </div>

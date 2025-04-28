@@ -4,7 +4,7 @@ import { PokemonCardItems } from "../types/PokemonCardItems.ts";
 import { PokemonData } from "../types/PokemonData.ts";
 import ColorThief from "colorthief";
 
-export function PokemonCard({ pokemonData }: PokemonCardItems) {
+export function PokemonCard({ pokemonData, onClick }: PokemonCardItems) {
     const legendaries = ["mewtwo", "mew", "articuno", "zapdos", "moltres"];
     const colorThief = new ColorThief();
     const [colors, setColors] = useState<number[][] | null>(null);
@@ -79,7 +79,7 @@ export function PokemonCard({ pokemonData }: PokemonCardItems) {
     }
 
     return (
-        <div className="card-container">
+        <div className="card-container" onClick={onClick}>
             <div className="card" onLoad={() => getColorPallete(pokemonData.sprites.front_default)} style={getCardStyles()}>
             <div className="id_number">{'#'+pokemonData.id}</div>
                 <div className="sprite" style={getSpriteBgStyle()}>
