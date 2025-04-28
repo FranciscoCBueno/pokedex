@@ -1,11 +1,8 @@
 import "../styles/PokemonCard.css";
 import React, { useState } from "react";
-import { PokemonData } from "../pages/Home";
+import { PokemonCardItems } from "../types/PokemonCardItems.ts";
+import { PokemonData } from "../types/PokemonData.ts";
 import ColorThief from "colorthief";
-
-interface PokemonCardItems {
-    pokemonData: PokemonData;
-}
 
 export function PokemonCard({ pokemonData }: PokemonCardItems) {
     const legendaries = ["mewtwo", "mew", "articuno", "zapdos", "moltres"];
@@ -50,7 +47,7 @@ export function PokemonCard({ pokemonData }: PokemonCardItems) {
             return {};
         }
         const bgColor = `rgb(${colors[0][0]}, ${colors[0][1]}, ${colors[0][2]})`;
-        const borderColor = checkLegendary(pokemonData) ? "gold" : `rgb(${colors[1][0]}, ${colors[1][1]}, ${colors[1][2]})`;
+        const borderColor = `rgb(${colors[1][0]}, ${colors[1][1]}, ${colors[1][2]})`;
         const brightness = Math.round(((colors[0][0] * 299) + (colors[0][1] * 587) + (colors[0][2] * 114)) / 1000);
         const textColor = brightness > 125 ? 'black' : 'white';
         return {
@@ -66,6 +63,12 @@ export function PokemonCard({ pokemonData }: PokemonCardItems) {
         }
         const brightness = Math.round(((colors[0][0] * 299) + (colors[0][1] * 587) + (colors[0][2] * 114)) / 1000);
         const bgColor = brightness > 125 ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)";
+        if (checkLegendary(pokemonData)) {
+            return {
+                backgroundColor: bgColor,
+                border: '2px solid gold',
+            };
+        }
         return {
             backgroundColor: bgColor
         };
@@ -77,9 +80,8 @@ export function PokemonCard({ pokemonData }: PokemonCardItems) {
 
     return (
         <div className="card-container">
-            <div className="card" id={checkLegendary(pokemonData) ? "legendary" : "regular"} 
-            onLoad={() => getColorPallete(pokemonData.sprites.front_default)} style={getCardStyles()}>
-                <p className="id_number">{'#'+pokemonData.id}</p>
+            <div className="card" onLoad={() => getColorPallete(pokemonData.sprites.front_default)} style={getCardStyles()}>
+            <div className="id_number">{'#'+pokemonData.id}</div>
                 <div className="sprite" style={getSpriteBgStyle()}>
                     <img className="sprite-img" src={pokemonData.sprites.front_default} alt={pokemonData.name+" sprite"} />
                 </div>

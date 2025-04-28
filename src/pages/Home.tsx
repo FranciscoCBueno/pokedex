@@ -2,41 +2,20 @@ import "../styles/Home.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { PokemonCard } from "../components/PokemonCard.tsx";
-
-export interface PokemonData {
-    id: number;
-    name: string;
-    types: [{
-        slot: number;
-        type: {
-            name: string;
-            url: string;
-        };
-    }]
-    sprites: {
-        front_default: string;
-        front_shiny: string;
-    };
-}
-
-interface PokemonList {
-    PokemonData: PokemonData[];
-}
+import { PokemonData } from "../types/PokemonData.ts";
 
 export function Home() {
-    const [pokemonList, setPokemonList] = useState<PokemonList | null>(null);
+    const [pokemonList, setPokemonList] = useState<PokemonData[]>([]);
 
     const fetchPokemonData = async () => {
-        const tempPokemonData: PokemonData[] = [];
-        for (let i = 1; i <= 151; i++) {
+        for (let i = 1; i <= 1025; i++) {
             try {
                 const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${i}`);
-                tempPokemonData.push(response.data);
+                setPokemonList((prevList) => [...prevList, response.data]);
             } catch (error) {
                 console.error("Error fetching Pokemon data:", error);
             }
         }
-        setPokemonList({ PokemonData: tempPokemonData });
     };
 
     useEffect(() => {
@@ -46,8 +25,9 @@ export function Home() {
     return (
         <div className="home-container">
             <div className="card_list">
-                {pokemonList ? (pokemonList.PokemonData.map((pokemon) => (<PokemonCard pokemonData={pokemon}/>))) 
-                : (<p>Loading Pokedex...</p>)}
+                {pokemonList.length > 0 ? (
+                    pokemonList.map((pokemon) => (<PokemonCard key={pokemon.id} pokemonData={pokemon} />))
+                ) : (<p>Loading Pokedex...</p>)}
             </div>
         </div>
     );
