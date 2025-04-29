@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import "../styles/Pokemon.css";
 import axios from 'axios';
-import { PokemonFullData } from '../types/PokemonFullData.ts';
+import { PokemonFullData } from '../types/PokemonFullData';
 import { useNavigate, useParams } from 'react-router-dom';
 
 export function Pokemon() {

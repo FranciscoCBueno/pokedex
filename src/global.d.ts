@@ -5,4 +5,9 @@ declare module 'colorthief' {
       getColor(sourceImage: HTMLImageElement, quality?: number): Color;
       getPalette(sourceImage: HTMLImageElement, colorCount?: number, quality?: number): Color[];
     }
-  }
+}
+
+declare module "*.svg" {
+    const content: string;
+    export default content;
+}

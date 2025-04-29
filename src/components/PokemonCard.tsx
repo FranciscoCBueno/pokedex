@@ -1,7 +1,7 @@
 import "../styles/PokemonCard.css";
 import React, { useState } from "react";
-import { PokemonCardItems } from "../types/PokemonCardItems.ts";
-import { PokemonData } from "../types/PokemonData.ts";
+import { PokemonCardItems } from "../types/PokemonCardItems";
+import { PokemonData } from "../types/PokemonData";
 import ColorThief from "colorthief";
 
 export function PokemonCard({ pokemonData, onClick }: PokemonCardItems) {
@@ -74,7 +74,7 @@ export function PokemonCard({ pokemonData, onClick }: PokemonCardItems) {
         };
     }
 
-    const getTypeColor = (type: string) => {
+    const getTypeColor = (type: keyof typeof typeColours) => {
         return {backgroundColor: typeColours[type] || '#FFF'};
     }
 
@@ -87,7 +87,8 @@ export function PokemonCard({ pokemonData, onClick }: PokemonCardItems) {
                 </div>
                 <h2 className="name">{pokemonData.name.toUpperCase()}</h2>
                 <div className="types">
-                    {pokemonData.types.map((types) => (<span className="type" style={getTypeColor(types.type.name)}>{types.type.name.toUpperCase()}</span>))}
+                    {pokemonData.types.map((types) => (<span className="type" key={types.slot} 
+                    style={getTypeColor(types.type.name as keyof typeof typeColours)}>{types.type.name.toUpperCase()}</span>))}
                 </div>
             </div>
         </div>

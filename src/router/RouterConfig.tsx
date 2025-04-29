@@ -1,8 +1,8 @@
 import React from "react";
 import { Navigate, createBrowserRouter } from 'react-router-dom';
-import App from "../App.tsx";
-import { Home } from "../pages/Home.tsx";
-import { Pokemon } from "../pages/Pokemon.tsx";
+import App from "../App";
+import { Home } from "../pages/Home";
+import { Pokemon } from "../pages/Pokemon";
 export const Routes = createBrowserRouter([
     {
         path: '/',
