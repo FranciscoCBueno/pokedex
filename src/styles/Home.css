@@ -11,12 +11,22 @@
     background-color: rgb(226, 226, 226);
 }
 
+.search {
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    width: 20px;
+    height: 20px;
+}
+
 .search-bar {
     width: 500px;
     padding: 0.5rem;
     border-radius: 5px;
     border: 1px solid #ccc;
-    margin: 1rem;
+    margin: 10px;
     font-size: 16px;
 }
 

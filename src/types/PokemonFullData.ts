@@ -61,10 +61,12 @@ export interface PokemonFullData {
         url: string;
     }
     sprites: {
-        front_default: string;
-        front_shiny: string;
-        back_default: string;
-        back_shiny: string;
+        other: {
+            'official-artwork': {
+                front_default: string;
+                front_shiny: string;
+            };
+        };
     };
     cries: {
         latest: string;

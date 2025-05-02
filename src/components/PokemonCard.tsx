@@ -1,12 +1,13 @@
 import "../styles/PokemonCard.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PokemonCardItems } from "../types/PokemonCardItems";
-import { PokemonData } from "../types/PokemonData";
 import ColorThief from "colorthief";
+import axios from "axios";
 
 export function PokemonCard({ pokemonData, onClick }: PokemonCardItems) {
-    const legendaries = ["mewtwo", "mew", "articuno", "zapdos", "moltres"];
     const colorThief = new ColorThief();
+    const [isLegendary, setIsLegendary] = useState(false);
+    const [isMythical, setIsMythical] = useState(false);
     const [colors, setColors] = useState<number[][] | null>(null);
     const typeColours = {
         normal: '#A8A77A',
@@ -28,10 +29,6 @@ export function PokemonCard({ pokemonData, onClick }: PokemonCardItems) {
         steel: '#B7B7CE',
         fairy: '#D685AD',
     };
-    
-    const checkLegendary = (pokemon : PokemonData) => {
-        return legendaries.includes(pokemon.name);
-    }
 
     const getColorPallete = (url : string) => {
         const img = new Image();
@@ -63,14 +60,15 @@ export function PokemonCard({ pokemonData, onClick }: PokemonCardItems) {
         }
         const brightness = Math.round(((colors[0][0] * 299) + (colors[0][1] * 587) + (colors[0][2] * 114)) / 1000);
         const bgColor = brightness > 125 ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)";
-        if (checkLegendary(pokemonData)) {
-            return {
-                backgroundColor: bgColor,
-                border: '2px solid gold',
-            };
+        let border = "none";
+        if (isLegendary) {
+            border = "2px solid gold";
+        } else if (isMythical) {
+            border = "2px solid magenta";
         }
         return {
-            backgroundColor: bgColor
+            backgroundColor: bgColor,
+            border: border
         };
     }
 
@@ -78,12 +76,25 @@ export function PokemonCard({ pokemonData, onClick }: PokemonCardItems) {
         return {backgroundColor: typeColours[type] || '#FFF'};
     }
 
+    useEffect(() => {
+        if (pokemonData) {
+            axios.get(pokemonData.species.url)
+            .then((response) => {
+                setIsLegendary(response.data.is_legendary);
+                setIsMythical(response.data.is_mythical);
+            });
+        }
+    }, [pokemonData]);
+
     return (
         <div className="card-container" onClick={onClick}>
             <div className="card" onLoad={() => getColorPallete(pokemonData.sprites.front_default)} style={getCardStyles()}>
-            <div className="id_number">{'#'+pokemonData.id}</div>
+                <div className="card-header">
+                    <div className="id_number">{'#'+pokemonData.id}</div>
+                </div>
                 <div className="sprite" style={getSpriteBgStyle()}>
-                    <img className="sprite-img" src={pokemonData.sprites.front_default} alt={pokemonData.name+" sprite"} />
+                    <img className="sprite-img" src={pokemonData.sprites.front_default} 
+                    alt={pokemonData.name+" sprite"} />
                 </div>
                 <h2 className="name">{pokemonData.name.toUpperCase()}</h2>
                 <div className="types">

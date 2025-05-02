@@ -72,11 +72,14 @@ export function Home() {
 
     return (
         <div className="home-container">
-            <img src={search} alt="search icon" />
-            <input type="text" className="search-bar" name="search" placeholder="Look up by name or id"/>
+            <div className="search">
+                <img className="search-icon" src={search} alt="search icon" />
+                <input type="text" className="search-bar" name="search" placeholder="Look up by name or id"/>
+            </div>
             <div className="card_list">
                 {pokemonList.length > 0 ? (
-                pokemonList.map((pokemon) => (<PokemonCard key={pokemon.id} pokemonData={pokemon} onClick={() => navigate(`/pokemon/${pokemon.id}`)}/>))
+                pokemonList.map((pokemon) => (<PokemonCard key={pokemon.id} pokemonData={pokemon} 
+                onClick={() => navigate(`/pokemon/${pokemon.id}`)}/>))
                 ) : (<p>Loading Pokedex...</p>)}
             </div>
         </div>

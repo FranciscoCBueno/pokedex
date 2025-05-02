@@ -28,6 +28,13 @@
     transform: scale(1.02);
 }
 
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
 .id_number {
     width: 100%;
 }
