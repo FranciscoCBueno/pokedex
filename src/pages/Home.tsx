@@ -1,13 +1,13 @@
 import "../styles/Home.css";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import axios from "axios";
 import { PokemonCard } from "../components/PokemonCard";
-import { PokemonData } from "../types/PokemonData";
 import { useNavigate } from "react-router-dom";
+import { PokemonContext } from "../context/PokemonContext";
 import search from "../assets/search.svg";
 
 export function Home() {
-    const [pokemonList, setPokemonList] = useState<PokemonData[]>([]);
+    const { pokemonList, setPokemonList, searchQuery, setSearchQuery, filters, setFilters } = useContext(PokemonContext);
     const navigate = useNavigate();
     const [offset, setOffset] = useState(0);
     const [hasMore, setHasMore] = useState(true);
@@ -30,15 +30,22 @@ export function Home() {
                 })
             );
             const pokemonDataPromisesNoNull = pokemonDataPromises.filter((data) => data !== null);
-            setPokemonList((prevList) => [...prevList, ...pokemonDataPromisesNoNull]);
+            setPokemonList((prevList) => {
+                const existingIds = new Set(prevList.map((pokemon) => pokemon.id));
+                const newPokemon = pokemonDataPromisesNoNull.filter(
+                    (pokemon) => !existingIds.has(pokemon.id)
+                );
+                return [...prevList, ...newPokemon];
+            });
             setOffset((prevOffset) => prevOffset + 20);
             if (pokemonDataPromises.length < 20) setHasMore(false);
+            pokemonList.sort((a, b) => a.id - b.id);
         } catch (error) {
             console.error("Error fetching Pokemon data:", error);
         } finally {
             setIsLoading(false);
         }
-    }, [offset, hasMore, isLoading]);
+    }, [offset, hasMore, isLoading, setPokemonList, pokemonList]);
 
     const debounce = (func: () => void, delay: number) => {
         let timeoutId: NodeJS.Timeout;
@@ -55,7 +62,7 @@ export function Home() {
     useEffect(() => {
         const checkScroll = () => {
             const scrollPosition = window.innerHeight + window.scrollY;
-            const threshold = document.documentElement.scrollHeight - 2000;
+            const threshold = document.documentElement.scrollHeight - 3000;
             
             if (scrollPosition >= threshold && hasMore && !isLoading) {
                 fetchPokemonData();
@@ -74,7 +81,8 @@ export function Home() {
         <div className="home-container">
             <div className="search">
                 <img className="search-icon" src={search} alt="search icon" />
-                <input type="text" className="search-bar" name="search" placeholder="Look up by name or id"/>
+                <input type="text" className="search-bar" name="search" placeholder="Look up by name or id"
+                value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
             </div>
             <div className="card_list">
                 {pokemonList.length > 0 ? (

@@ -9,6 +9,7 @@ import star from '../assets/star.svg';
 export function Pokemon() {
     const { id } = useParams<{ id: string }>();
     const [pokemonData, setPokemonData] = useState<PokemonFullData | null>(null);
+    const [pokedexEntry, setPokedexEntry] = useState<string | null>(null);
     const [shiny, setShiny] = useState(false);
     const navigate = useNavigate();
     const typeColours = {
@@ -45,11 +46,29 @@ export function Pokemon() {
         }
     }, [id]);
 
+    const getPokedexEntry = useCallback(async () => {
+        if (pokemonData) {
+            axios.get(pokemonData.species.url).then((response) => {
+                const entries = response.data.flavor_text_entries;
+                const englishEntry = entries.find(
+                    (entry: { language: { name: string; }, version: {name: string} }) => entry.language.name === 'en' 
+                    && entry.version.name === 'shield'
+                );
+                if (englishEntry) {
+                    setPokedexEntry(englishEntry.flavor_text.replace(/[^a-zA-Z0-9.,' ]/g, ' ').replace(/\s+/g, ' ').trim());
+                }
+            })
+        }
+    }, [pokemonData]);
+
     useEffect(() => {
         if (id) {
             fetchPokemonFullData();
         }
-    }, [id, fetchPokemonFullData]);
+        if (pokemonData) {
+            getPokedexEntry();
+        }
+    }, [id, pokemonData, fetchPokemonFullData, getPokedexEntry]);
 
     return (
         <div className="pokemon-container">
@@ -81,6 +100,9 @@ export function Pokemon() {
                     ) : (
                         <div className="loading-sprite">Loading...</div>
                     )}
+                </div>
+                <div className="pokedex-entry">
+                    <h2>{pokedexEntry}</h2>
                 </div>
             </div>
         </div>
