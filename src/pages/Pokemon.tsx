@@ -12,6 +12,7 @@ export function Pokemon() {
     const [pokedexEntry, setPokedexEntry] = useState<string | null>(null);
     const [shiny, setShiny] = useState(false);
     const navigate = useNavigate();
+    let total : number = 0;
     const typeColours = {
         normal: '#A8A77A',
         fire: '#EE8130',
@@ -32,6 +33,14 @@ export function Pokemon() {
         steel: '#B7B7CE',
         fairy: '#D685AD',
     };
+    const statColors = {
+        hp: 'rgba(255, 0, 0, 0.5)',
+        attack: 'rgba(0, 0, 255, 0.5)',
+        defense: 'rgba(0, 128, 0, 0.5)',
+        'special-attack': 'rgba(255, 165, 0, 0.5)',
+        'special-defense': 'rgba(128, 0, 128, 0.5)',
+        speed: 'rgba(255, 255, 0, 0.5)'
+    }
 
     const getTypeColor = (type: keyof typeof typeColours) => {
         return {backgroundColor: typeColours[type] || '#FFF'};
@@ -50,12 +59,13 @@ export function Pokemon() {
         if (pokemonData) {
             axios.get(pokemonData.species.url).then((response) => {
                 const entries = response.data.flavor_text_entries;
-                const englishEntry = entries.find(
-                    (entry: { language: { name: string; }, version: {name: string} }) => entry.language.name === 'en' 
-                    && entry.version.name === 'shield'
+                const englishEntries = entries.filter(
+                    (entry: { language: { name: string; } }) => entry.language.name === 'en'
                 );
-                if (englishEntry) {
-                    setPokedexEntry(englishEntry.flavor_text.replace(/[^a-zA-Z0-9.,' ]/g, ' ').replace(/\s+/g, ' ').trim());
+    
+                if (englishEntries.length > 0) {
+                    const latestEntry = englishEntries[englishEntries.length - 1];
+                    setPokedexEntry(latestEntry.flavor_text.replace(/[^a-zA-Z0-9.,' ]/g, ' ').replace(/\s+/g, ' ').trim());
                 }
             })
         }
@@ -101,8 +111,34 @@ export function Pokemon() {
                         <div className="loading-sprite">Loading...</div>
                     )}
                 </div>
-                <div className="pokedex-entry">
-                    <h2>{pokedexEntry}</h2>
+                <div className="pokemon-details">
+                    <h2 className="pokedex-entry">{pokedexEntry}</h2>
+                    <div className="pokemon-stats">
+                        Stats:
+                        <div className="stats-list">
+                            {pokemonData ? pokemonData.stats.map(((stat, index) => (
+                                <div key={index} className="stat-item" style={{backgroundColor: statColors[stat.stat.name as keyof typeof statColors]}}>
+                                    <span className="stat-name">{stat.stat.name.toUpperCase()}</span>
+                                    <span className="stat-value">{stat.base_stat}</span>
+                                </div>
+                            )), total = pokemonData.stats.reduce((sum, stat) => sum + stat.base_stat, 0)): "Loading Stats"}
+                            <div className="stat-item" style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}}>
+                                <span className="stat-name">Total</span>
+                                <span className="stat-value">{total}</span>
+                            </div>
+                            <div className="physical-stats">
+                                <div className="physical-stat-item">
+                                    <span className="physical-stat-name">Height: </span>
+                                    <span className="physical-stat-value">{pokemonData ? (pokemonData.height / 10).toFixed(1) : "Loading"} m</span>
+                                </div>
+                                <hr className='separator'/>
+                                <div className="physical-stat-item">
+                                    <span className="physical-stat-name">Weight: </span>
+                                    <span className="physical-stat-value">{pokemonData ? (pokemonData.weight / 10).toFixed(1) : "Loading"} kg</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
