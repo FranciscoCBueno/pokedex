@@ -2,6 +2,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import "../styles/Pokemon.css";
 import axios from 'axios';
 import { PokemonFullData } from '../types/PokemonFullData';
+import { TypeDamageRelations } from '../types/TypeDamageRelations';
 import { useNavigate, useParams } from 'react-router-dom';
 import back from '../assets/back.svg';
 import star from '../assets/star.svg';
@@ -10,9 +11,9 @@ export function Pokemon() {
     const { id } = useParams<{ id: string }>();
     const [pokemonData, setPokemonData] = useState<PokemonFullData | null>(null);
     const [pokedexEntry, setPokedexEntry] = useState<string | null>(null);
+    const [damageRelations, setDamageRelations] = useState<TypeDamageRelations | null>(null);
     const [shiny, setShiny] = useState(false);
     const navigate = useNavigate();
-    let total : number = 0;
     const typeColours = {
         normal: '#A8A77A',
         fire: '#EE8130',
@@ -46,6 +47,70 @@ export function Pokemon() {
         return {backgroundColor: typeColours[type] || '#FFF'};
     }
 
+    const getDamageRelations = useCallback(async (types: PokemonFullData["types"]) => {
+        try {
+            const typeData = await Promise.all(types.map(t => axios.get(t.type.url).then(res => res.data.damage_relations)));
+            const getTypeNames = (arr: { name: string }[]) => arr.map(t => t.name);
+            const combined = {
+                double_from: typeData.flatMap(d => getTypeNames(d.double_damage_from)),
+                half_from: typeData.flatMap(d => getTypeNames(d.half_damage_from)),
+                no_from: typeData.flatMap(d => getTypeNames(d.no_damage_from)),
+                double_to: typeData.flatMap(d => getTypeNames(d.double_damage_to)),
+                half_to: typeData.flatMap(d => getTypeNames(d.half_damage_to)),
+                no_to: typeData.flatMap(d => getTypeNames(d.no_damage_to)),
+            };
+
+            const filtered = {
+                double_from: combined.double_from.filter(t => !combined.no_from.includes(t)),
+                half_from: combined.half_from.filter(t => !combined.no_from.includes(t)),
+                double_to: combined.double_to.filter(t => !combined.no_to.includes(t)),
+                half_to: combined.half_to.filter(t => !combined.no_to.includes(t)),
+            };
+
+            const countTypes = (arr: string[]) => arr.reduce((acc, t) => ({ ...acc, [t]: (acc[t] || 0) + 1 }), {} as Record<string, number>);
+            const doubleFromCount = countTypes(filtered.double_from);
+            const halfFromCount = countTypes(filtered.half_from);
+            const doubleToCount = countTypes(filtered.double_to);
+            const halfToCount = countTypes(filtered.half_to);
+
+            const cancelOpposing = (damage: Record<string, number>, resist: Record<string, number>) => {
+                const result = { ...damage };
+                for (const t in resist) {
+                    if (result[t]) {
+                        const min = Math.min(result[t], resist[t]);
+                        result[t] -= min;
+                        if (result[t] === 0) delete result[t];
+                    }
+                }
+                return result;
+            };
+
+            const finalDoubleFrom = cancelOpposing(doubleFromCount, halfFromCount);
+            const finalHalfFrom = cancelOpposing(halfFromCount, doubleFromCount);
+            const finalDoubleTo = cancelOpposing(doubleToCount, halfToCount);
+            const finalHalfTo = cancelOpposing(halfToCount, doubleToCount);
+
+            const createDamageList = (types: Record<string, number>, baseMultiplier: string, enhancedMultiplier: string) => 
+                Object.entries(types)
+                    .filter(([_, count]) => count > 0)
+                    .map(([name]) => ({
+                        name,
+                        multiplier: types[name] >= 2 ? enhancedMultiplier : baseMultiplier
+                    }));
+
+            setDamageRelations({
+                double_damage_from: createDamageList(finalDoubleFrom, 'x2', 'x4'),
+                half_damage_from: createDamageList(finalHalfFrom, '×½', '×¼'),
+                no_damage_from: [...new Set(combined.no_from)].map(name => ({ name, multiplier: 'x0' })),
+                double_damage_to: createDamageList(finalDoubleTo, 'x2', 'x4'),
+                half_damage_to: createDamageList(finalHalfTo, '×½', '×¼'),
+                no_damage_to: [...new Set(combined.no_to)].map(name => ({ name, multiplier: 'x0' })),
+            });
+        } catch (error) {
+            console.error("Error fetching damage relations:", error);
+        }
+    }, []);
+
     const fetchPokemonFullData = useCallback(async () => {
         try {
             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
@@ -55,7 +120,7 @@ export function Pokemon() {
         }
     }, [id]);
 
-    const getPokedexEntry = useCallback(async () => {
+    const getPokedexEntry = useCallback(() => {
         if (pokemonData) {
             axios.get(pokemonData.species.url).then((response) => {
                 const entries = response.data.flavor_text_entries;
@@ -75,10 +140,14 @@ export function Pokemon() {
         if (id) {
             fetchPokemonFullData();
         }
+    }, [id, fetchPokemonFullData]);
+
+    useEffect(() => {
         if (pokemonData) {
             getPokedexEntry();
+            getDamageRelations(pokemonData.types);
         }
-    }, [id, pokemonData, fetchPokemonFullData, getPokedexEntry]);
+    }, [pokemonData, getPokedexEntry , getDamageRelations]);
 
     return (
         <div className="pokemon-container">
@@ -116,15 +185,15 @@ export function Pokemon() {
                     <div className="pokemon-stats">
                         Stats:
                         <div className="stats-list">
-                            {pokemonData ? pokemonData.stats.map(((stat, index) => (
+                            {pokemonData ? pokemonData.stats.map((stat, index) => (
                                 <div key={index} className="stat-item" style={{backgroundColor: statColors[stat.stat.name as keyof typeof statColors]}}>
                                     <span className="stat-name">{stat.stat.name.toUpperCase()}</span>
                                     <span className="stat-value">{stat.base_stat}</span>
                                 </div>
-                            )), total = pokemonData.stats.reduce((sum, stat) => sum + stat.base_stat, 0)): "Loading Stats"}
+                            )): "Loading Stats"}
                             <div className="stat-item" style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}}>
                                 <span className="stat-name">Total</span>
-                                <span className="stat-value">{total}</span>
+                                <span className="stat-value">{pokemonData ? pokemonData.stats.reduce((sum, stat) => sum + stat.base_stat, 0) : "Loading Total"}</span>
                             </div>
                             <div className="physical-stats">
                                 <div className="physical-stat-item">
@@ -137,6 +206,34 @@ export function Pokemon() {
                                     <span className="physical-stat-value">{pokemonData ? (pokemonData.weight / 10).toFixed(1) : "Loading"} kg</span>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div className="type-effectiveness">
+                        <div className="weaknesses-list">
+                            Weaknesses:
+                            {damageRelations ? damageRelations.double_damage_from.map((type, slot) => (
+                                <div key={slot} className="pokemon-type" style={getTypeColor(type.name as keyof typeof typeColours)}>
+                                    {type.name.toUpperCase()} <span className="multiplier" style={type.multiplier === "×½" || type.multiplier === "×¼" ? 
+                                        {fontFamily: "Roboto, sans-serif"} : {}}>{type.multiplier}</span>
+                                </div>
+                            )) : "Loading Weaknesses"}
+                        </div>
+                        <div className="resistances-list">
+                            Resistances:
+                            {damageRelations ? damageRelations.half_damage_from.map((type, slot) => (
+                                <div key={slot} className="pokemon-type" style={getTypeColor(type.name as keyof typeof typeColours)}>
+                                    {type.name.toUpperCase()} <span className="multiplier" style={type.multiplier === "×½" || type.multiplier === "×¼" ? 
+                                        {fontFamily: "Roboto, sans-serif"} : {}}>{type.multiplier}</span>
+                                </div>
+                            )) : "Loading Resistances"}
+                        </div>
+                        <div className="immunities-list">
+                            Immunities:
+                            {damageRelations ? damageRelations.no_damage_from.map((type, slot) => (
+                                <div key={slot} className="pokemon-type" style={getTypeColor(type.name as keyof typeof typeColours)}>
+                                    {type.name.toUpperCase()}
+                                </div>
+                            )) : "Loading Immunities"}
                         </div>
                     </div>
                 </div>

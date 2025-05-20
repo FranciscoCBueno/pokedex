@@ -55,6 +55,7 @@
     padding: 3px;
     border-radius: 6px;
     border: solid 2px white;
+    width: max-content;
 }
 
 .pokemon-info {
@@ -104,7 +105,12 @@
 }
 
 .pokedex-entry {
+    width: max-content;
+    max-width: fit-content;
     font-size: 16px;
+    font-style: italic;
+    border: double black;
+    padding: 0.5rem;
 }
 
 .pokemon-stats {
@@ -143,4 +149,15 @@
 
 .separator {
     margin: 2px;
+}
+
+.type-effectiveness {
+    display: flex;
+    gap: 1rem;
+}
+
+.weaknesses-list, .resistances-list, .immunities-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
