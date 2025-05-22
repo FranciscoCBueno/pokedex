@@ -1,7 +1,7 @@
 import "../styles/Home.css";
-import React, { useState, useEffect, useCallback, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { PokemonCard } from "../components/PokemonCard";
+import { PokemonCard } from "../components/Home/PokemonCard";
 import { useNavigate } from "react-router-dom";
 import { PokemonContext } from "../context/PokemonContext";
 import search from "../assets/search.svg";
@@ -13,40 +13,6 @@ export function Home() {
     const [hasMore, setHasMore] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
 
-    const fetchPokemonData = useCallback(async () => {
-        if (!hasMore || isLoading) return;
-        setIsLoading(true);
-        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=20`);
-        const results = response.data.results;
-        try {
-            const pokemonDataPromises = await Promise.all(
-                results.map(async (pokemon: {name: string, url: string}) => {
-                    if (!/\/(\d{5,})\/$/.test(pokemon.url)) {
-                        const pokedata = await axios.get(pokemon.url);
-                        return pokedata.data;
-                    } else {
-                        return null;
-                    }
-                })
-            );
-            const pokemonDataPromisesNoNull = pokemonDataPromises.filter((data) => data !== null);
-            setPokemonList((prevList) => {
-                const existingIds = new Set(prevList.map((pokemon) => pokemon.id));
-                const newPokemon = pokemonDataPromisesNoNull.filter(
-                    (pokemon) => !existingIds.has(pokemon.id)
-                );
-                return [...prevList, ...newPokemon];
-            });
-            setOffset((prevOffset) => prevOffset + 20);
-            if (pokemonDataPromises.length < 20) setHasMore(false);
-            pokemonList.sort((a, b) => a.id - b.id);
-        } catch (error) {
-            console.error("Error fetching Pokemon data:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    }, [offset, hasMore, isLoading, setPokemonList, pokemonList]);
-
     const debounce = (func: () => void, delay: number) => {
         let timeoutId: NodeJS.Timeout;
         return () => {
@@ -56,16 +22,52 @@ export function Home() {
     };
 
     useEffect(() => {
-        fetchPokemonData();
-    }, []);
+        const fetchPokemonData = async (currentOffset: number) => {
+            if (isLoading) return;
+            setIsLoading(true);
+            try {
+                const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/?offset=${currentOffset}&limit=20`);
+                const results = response.data.results;
+                const pokemonData = await Promise.all(
+                    results.map(async (pokemon: {name: string, url: string}) => {
+                        if (!/\/(\d{5,})\/$/.test(pokemon.url)) {
+                            const pokedata = await axios.get(pokemon.url);
+                            return pokedata.data;
+                        }
+                        return null;
+                    })
+                );
+                const pokemonDataNotNull = pokemonData.filter(Boolean);
+                console.log("Fetched Pokemon Data:", pokemonDataNotNull);
+                setPokemonList(prevList => {
+                const mergedList = [...prevList];
+                pokemonDataNotNull.forEach(newPokemon => {
+                    if (!mergedList.some(p => p.id === newPokemon.id)) {
+                        mergedList.push(newPokemon);
+                    }
+                });
+                return mergedList.sort((a, b) => a.id - b.id);
+                });
+                setOffset(currentOffset + 20);
+                if (results.length < 20) setHasMore(false);
+            } catch (error) {
+                console.error("Error fetching Pokemon data:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
 
-    useEffect(() => {
+        if (pokemonList.length === 0) {
+            fetchPokemonData(0);
+        }
+
         const checkScroll = () => {
+            if (!hasMore || isLoading) return;
             const scrollPosition = window.innerHeight + window.scrollY;
-            const threshold = document.documentElement.scrollHeight - 3000;
+            const threshold = document.documentElement.scrollHeight - 1000;
             
-            if (scrollPosition >= threshold && hasMore && !isLoading) {
-                fetchPokemonData();
+            if (scrollPosition >= threshold) {
+                fetchPokemonData(offset);
             }
         };
 
@@ -75,7 +77,7 @@ export function Home() {
         return () => {
             window.removeEventListener('scroll', debouncedScroll);
         };
-    }, [fetchPokemonData, hasMore, isLoading]);
+    }, [hasMore, isLoading, pokemonList.length, offset, setPokemonList, setHasMore]);
 
     return (
         <div className="home-container">

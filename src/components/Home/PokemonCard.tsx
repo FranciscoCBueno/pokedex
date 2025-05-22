@@ -1,6 +1,6 @@
-import "../styles/PokemonCard.css";
+import "../../styles/PokemonCard.css";
 import React, { useEffect, useState } from "react";
-import { PokemonCardItems } from "../types/PokemonCardItems";
+import { PokemonCardItems } from "../../types/PokemonCardItems";
 import ColorThief from "colorthief";
 import axios from "axios";
 

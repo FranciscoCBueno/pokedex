@@ -1,4 +1,4 @@
-export interface PokemonFullData {
+export class PokemonFullData {
     id: number;
     name: string;
     base_experience: number;
@@ -87,4 +87,25 @@ export interface PokemonFullData {
             url: string;
         };
     }[];
+
+    constructor() {
+        this.id = 0;
+        this.name = "";
+        this.base_experience = 0;
+        this.height = 0;
+        this.is_default = false;
+        this.order = 0;
+        this.weight = 0;
+        this.abilities = [];
+        this.forms = [];
+        this.game_indices = [];
+        this.held_items = [];
+        this.location_area_encounters = "";
+        this.moves = [];
+        this.species = { name: "", url: "" };
+        this.sprites = { other: { 'official-artwork': { front_default: "", front_shiny: "" } } };
+        this.cries = { latest: "", legacy: "" };
+        this.stats = [];
+        this.types = [];
+    }
 }

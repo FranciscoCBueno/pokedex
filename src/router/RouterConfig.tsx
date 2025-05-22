@@ -3,6 +3,8 @@ import { Navigate, createBrowserRouter } from 'react-router-dom';
 import App from "../App";
 import { Home } from "../pages/Home";
 import { Pokemon } from "../pages/Pokemon";
+import { PokemonFullDataProvider } from "../context/PokemonFullDataContext";
+
 export const Routes = createBrowserRouter([
     {
         path: '/',
@@ -18,7 +20,11 @@ export const Routes = createBrowserRouter([
             },
             {
                 path: '/pokemon/:id',
-                element: <Pokemon />
+                element: (
+                    <PokemonFullDataProvider>
+                        <Pokemon/>
+                    </PokemonFullDataProvider>
+                )
             }
         ]
     }
