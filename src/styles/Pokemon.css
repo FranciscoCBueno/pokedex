@@ -113,7 +113,12 @@
     padding: 0.5rem;
 }
 
-.pokemon-stats {
+.stat-section {
+    display: flex;
+    gap: 2rem;
+}
+
+.pokemon-stats, .type-effectiveness {
     display: flex;
     margin-top: 1rem;
     gap: 1rem;
@@ -151,13 +156,12 @@
     margin: 2px;
 }
 
-.type-effectiveness {
-    display: flex;
-    gap: 1rem;
-}
-
 .weaknesses-list, .resistances-list, .immunities-list {
     display: flex;
     flex-direction: column;
     gap: 5px;
+}
+
+.pokemon-evolution-chain {
+    display: flex;
 }

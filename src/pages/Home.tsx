@@ -38,7 +38,6 @@ export function Home() {
                     })
                 );
                 const pokemonDataNotNull = pokemonData.filter(Boolean);
-                console.log("Fetched Pokemon Data:", pokemonDataNotNull);
                 setPokemonList(prevList => {
                 const mergedList = [...prevList];
                 pokemonDataNotNull.forEach(newPokemon => {

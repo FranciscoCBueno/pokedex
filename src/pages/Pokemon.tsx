@@ -7,6 +7,7 @@ import { PokemonHeader } from '../components/Pokemon/PokemonHeader';
 import { PokemonPicture } from '../components/Pokemon/PokemonPicture';
 import { PokemonStats } from '../components/Pokemon/PokemonStats';
 import { PokemonTypeEffectiveness } from '../components/Pokemon/PokemonTypeEffectiveness';
+import { PokemonEvolutionChain } from '../components/Pokemon/PokemonEvolutionChain';
 
 export function Pokemon() {
     const { id } = useParams<{ id: string }>();
@@ -57,8 +58,11 @@ export function Pokemon() {
                 <PokemonPicture/>
                 <div className="pokemon-details">
                     <h2 className="pokedex-entry">{pokedexEntry}</h2>
-                    <PokemonStats/>
-                    <PokemonTypeEffectiveness/>
+                    <div className="stat-section">
+                        <PokemonStats/>
+                        <PokemonTypeEffectiveness/>
+                    </div>
+                    <PokemonEvolutionChain/>
                 </div>
             </div>
         </div>
