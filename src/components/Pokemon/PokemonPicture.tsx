@@ -9,8 +9,6 @@ export function PokemonPicture() {
 
     return (
         <div className="picture-container">
-            <button className='shiny-button' onClick={() => shiny ? setShiny(false) : setShiny(true)}>
-                <img className='star-icon' src={star} alt='switch to shiny button'/> Shiny</button>
             {pokemonFullData && pokemonFullData.sprites.other['official-artwork'].front_default ? (
                 <div className="pokemon-picture">
                     <img className='picture-img' src={shiny ? pokemonFullData.sprites.other['official-artwork'].front_shiny : 
@@ -19,6 +17,9 @@ export function PokemonPicture() {
             ) : (
                 <div className="loading-sprite">Loading picture...</div>
             )}
+            <button className='shiny-button' onClick={() => shiny ? setShiny(false) : setShiny(true)}>
+                <img className='star-icon' src={star} alt='switch to shiny button'/> Shiny
+            </button>
         </div>
     );
 }

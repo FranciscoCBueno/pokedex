@@ -23,32 +23,45 @@ export function PokemonTypeEffectiveness() {
 
     return (
         <div className="type-effectiveness">
-            <div className="weaknesses-list">
-                Weaknesses:
-                {damageRelations ? damageRelations.double_damage_from.map((type, slot) => (
-                    <div key={slot} className="pokemon-type" style={getTypeColor(type.name as keyof ColorUtils['typeColors'])}>
-                        {type.name.toUpperCase()} <span className="multiplier" style={type.multiplier === "×½" || type.multiplier === "×¼" ? 
-                            {fontFamily: "Roboto, sans-serif"} : {}}>{type.multiplier}</span>
+            {damageRelations ? (
+                <div className="lists-container">
+                    <div className="weaknesses-list">
+                        Weaknesses:
+                        <div className="type-list">
+                            {damageRelations.double_damage_from.map((type, slot) => (
+                                <div key={slot} className="pokemon-type" style={getTypeColor(type.name as keyof ColorUtils['typeColors'])}>
+                                    {type.name.toUpperCase()} <span className="multiplier" style={type.multiplier === "×½" || type.multiplier === "×¼" ? 
+                                        {fontFamily: "Roboto, sans-serif"} : {}}>{type.multiplier}</span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                )) : "Loading Weaknesses"}
-            </div>
-            <div className="resistances-list">
-                Resistances:
-                {damageRelations ? damageRelations.half_damage_from.map((type, slot) => (
-                    <div key={slot} className="pokemon-type" style={getTypeColor(type.name as keyof ColorUtils['typeColors'])}>
-                        {type.name.toUpperCase()} <span className="multiplier" style={type.multiplier === "×½" || type.multiplier === "×¼" ? 
-                            {fontFamily: "Roboto, sans-serif"} : {}}>{type.multiplier}</span>
+                    <div className="resistances-list">
+                        Resistances:
+                        <div className="type-list">
+                            {damageRelations.half_damage_from.map((type, slot) => (
+                                <div key={slot} className="pokemon-type" style={getTypeColor(type.name as keyof ColorUtils['typeColors'])}>
+                                    {type.name.toUpperCase()} <span className="multiplier" style={type.multiplier === "×½" || type.multiplier === "×¼" ? 
+                                        {fontFamily: "Roboto, sans-serif"} : {}}>{type.multiplier}</span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                )) : "Loading Resistances"}
-            </div>
-            <div className="immunities-list">
-                Immunities:
-                {damageRelations ? damageRelations.no_damage_from.map((type, slot) => (
-                    <div key={slot} className="pokemon-type" style={getTypeColor(type.name as keyof ColorUtils['typeColors'])}>
-                        {type.name.toUpperCase()}
+                    <div className="immunities-list">
+                        Immunities:
+                        <div className="type-list">
+                            {damageRelations.no_damage_from.length > 0 ? damageRelations.no_damage_from.map((type, slot) => (
+                                <div key={slot} className="pokemon-type" style={getTypeColor(type.name as keyof ColorUtils['typeColors'])}>
+                                    {type.name.toUpperCase()}
+                                </div>
+                            )) : 
+                            <div className="no-immunity">
+                                <p>None</p>
+                            </div>}
+                        </div>
                     </div>
-                )) : "Loading Immunities"}
-            </div>
+                </div>
+            ) : "Loading type effectiveness"}
         </div>
     );
 }

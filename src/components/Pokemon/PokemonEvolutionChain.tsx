@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { PokemonFullDataContext } from "../../context/PokemonFullDataContext";
 import { ColorUtils } from "../../utils/ColorUtils";
@@ -8,6 +9,7 @@ export function PokemonEvolutionChain() {
     const { pokemonFullData } = useContext(PokemonFullDataContext);
     const [evolutionChain, setEvolutionChain] = useState<PokemonData[]>([]);
     const { getTypeColor } = new ColorUtils();
+    const navigate = useNavigate();
 
     const getEvolutionChain = useCallback(async () => {
         const speciesUrl = pokemonFullData.species.url;
@@ -50,13 +52,12 @@ export function PokemonEvolutionChain() {
     return (
         <div className="pokemon-evolution-chain">
             { evolutionChain.map((pokemon) => (
-                <div className="evolution-pokemon" key={pokemon.id}>
+                <div className="evolution-pokemon" key={pokemon.id} onClick={() => {if (pokemon.id !== pokemonFullData.id) navigate(`/pokemon/${pokemon.id}`)}}>
                     <img src={pokemon.sprites.front_default} alt={pokemon.name} className="evolution-sprite"/>
                     <h3 className="evolution-name">{pokemon.name.toUpperCase()}</h3>
-                    <p className="evolution-id">#{pokemon.id}</p>
                     <div className="evolution-types">
                         {pokemon.types.map((type) => (
-                            <div key={type.slot} className="pokemon-type" style={getTypeColor(type.type.name as keyof ColorUtils['typeColors'])}>
+                            <div key={type.slot} className="pokemon-type" id="evolution-type" style={getTypeColor(type.type.name as keyof ColorUtils['typeColors'])}>
                                 {type.type.name.toUpperCase()}
                             </div>
                         ))}
