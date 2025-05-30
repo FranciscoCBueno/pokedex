@@ -33,7 +33,7 @@ export function Pokemon() {
     
                 if (englishEntries.length > 0) {
                     const latestEntry = englishEntries[englishEntries.length - 1];
-                    setPokedexEntry(latestEntry.flavor_text.replace(/[^a-zA-Z0-9.,' ]/g, ' ').replace(/\s+/g, ' ').trim());
+                    setPokedexEntry(latestEntry.flavor_text.replace(/[^\p{L}\p{N}.,'’ ]/gu, ' ').replace(/\s+/g, ' ').trim());
                 }
             })
         }
