@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { PokemonFullDataContext } from "../../context/PokemonFullDataContext";
 import { ColorUtils } from "../../utils/ColorUtils";
+import { EvolutionChain } from "../../types/EvolutionChain";
 import { PokemonData } from "../../types/PokemonData";
 
 export function PokemonEvolutionChain() {
     const { pokemonFullData } = useContext(PokemonFullDataContext);
-    const [evolutionChain, setEvolutionChain] = useState<PokemonData[]>([]);
+    const [ evolutionChain, setEvolutionChain ] = useState<EvolutionChain | null>(null);
+    const [ evolutionChainList, setEvolutionChainList ] = useState<PokemonData[]>([]);
     const { getTypeColor } = new ColorUtils();
     const navigate = useNavigate();
 
@@ -17,31 +19,26 @@ export function PokemonEvolutionChain() {
             const speciesResponse = await axios.get(speciesUrl);
             const evolutionChainUrl = speciesResponse.data.evolution_chain.url;
             const evolutionChainResponse = await axios.get(evolutionChainUrl);
-            const chain = evolutionChainResponse.data.chain;
-
-            const evolutions: PokemonData[] = [];
-            let currentEvolution = chain;
-
-            while (currentEvolution) {
-                const urlParts = currentEvolution.species.url.split("/").filter(Boolean);
-                const pokemonId = urlParts[urlParts.length - 1];
-                const pokemonData: PokemonData = {
-                    id: pokemonId,
-                    name: currentEvolution.species.name,
-                    types: [],
-                    species: { name: "", url: "" },
-                    sprites: { front_default: "", front_shiny: "" }
-                };
-                const pokemonResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonId}/`);
-                Object.assign(pokemonData, pokemonResponse.data);
-                evolutions.push(pokemonData);
-                currentEvolution = currentEvolution.evolves_to[0];
-            }
-            setEvolutionChain(evolutions);
+            setEvolutionChain(new EvolutionChain(evolutionChainResponse.data));
+            let evolutionData : PokemonData[] = await EvolutionChain.getList(evolutionChainResponse.data);
+            evolutionData = evolutionData.filter(
+                (item: any) => item && item.name && item.types
+            );
+            setEvolutionChainList(evolutionData);
         } catch (error) {
             console.error("Error fetching evolution chain:", error);
         }
     }, [pokemonFullData.species.url]);
+
+    const getTypesFor = (name: string) => {
+        const pokemon = evolutionChainList.find(p => p.name === name);
+        return pokemon ? pokemon.types : [];
+    };
+
+    const getSpritesFor = (name: string) => {
+        const pokemon = evolutionChainList.find(p => p.name === name);
+        return pokemon ? pokemon.sprites.front_default : "";
+    }
 
     useEffect(() => {
         if (pokemonFullData && pokemonFullData.species && pokemonFullData.species.url) {
@@ -50,20 +47,66 @@ export function PokemonEvolutionChain() {
     }, [pokemonFullData, getEvolutionChain]);
 
     return (
-        <div className="pokemon-evolution-chain">
-            { evolutionChain.map((pokemon) => (
-                <div className="evolution-pokemon" key={pokemon.id} onClick={() => {if (pokemon.id !== pokemonFullData.id) navigate(`/pokemon/${pokemon.id}`)}}>
-                    <img src={pokemon.sprites.front_default} alt={pokemon.name} className="evolution-sprite"/>
-                    <h3 className="evolution-name">{pokemon.name.toUpperCase()}</h3>
+        evolutionChain ? (
+            <div className="pokemon-evolution-chain">
+                <div className="evolution-pokemon" id="origin" onClick={() => navigate(`/pokemon/${evolutionChain.chain.species.name}`)}>
+                    <div className="evolution-sprite">
+                        <img src={getSpritesFor(evolutionChain.chain.species.name)} alt={evolutionChain.chain.species.name} />
+                    </div>
+                    <div className="evolution-name">
+                        {evolutionChain.chain.species.name.toUpperCase()}
+                    </div>
                     <div className="evolution-types">
-                        {pokemon.types.map((type) => (
-                            <div key={type.slot} className="pokemon-type" id="evolution-type" style={getTypeColor(type.type.name as keyof ColorUtils['typeColors'])}>
+                        {getTypesFor(evolutionChain.chain.species.name).map((type, index) => (
+                            <span key={index} className="pokemon-type" style={getTypeColor(type.type.name as keyof ColorUtils['typeColors'])}>
                                 {type.type.name.toUpperCase()}
-                            </div>
+                            </span>
                         ))}
                     </div>
                 </div>
-            )) }
-        </div>
+                {evolutionChain.chain.evolves_to.map((evolution, index) => (
+                    <div className="evolution-item" key={index}>
+                        <div className="evolution-pokemon" onClick={() => navigate(`/pokemon/${evolution.species.name}`)}>
+                            <div className="evolution-sprite">
+                                <img src={getSpritesFor(evolution.species.name)} alt={evolution.species.name} />
+                            </div>
+                            <div className="evolution-name" onClick={() => navigate(`/pokemon/${evolution.species.name}`)}>
+                                {evolution.species.name.toUpperCase()}
+                            </div>
+                            <div className="evolution-types">
+                                {getTypesFor(evolution.species.name).map((type, index) => (
+                                    <span key={index} className="pokemon-type" style={getTypeColor(type.type.name as keyof ColorUtils['typeColors'])}>
+                                        {type.type.name.toUpperCase()}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                        {evolution.evolves_to.length > 0 ? 
+                            <div className="evolution-subchain">
+                                {evolution.evolves_to.map((subEvolution, subIndex) => (
+                                    <div className="evolution-pokemon" key={subIndex} onClick={() => navigate(`/pokemon/${subEvolution.species.name}`)}>
+                                        <div className="evolution-sprite">
+                                            <img src={getSpritesFor(subEvolution.species.name)} alt={subEvolution.species.name} />
+                                        </div>
+                                        <div className="evolution-name">
+                                            {subEvolution.species.name.toUpperCase()}
+                                        </div>
+                                        <div className="evolution-types">
+                                            {getTypesFor(subEvolution.species.name).map((type, index) => (
+                                                <span key={index} className="pokemon-type" style={getTypeColor(type.type.name as keyof ColorUtils['typeColors'])}>
+                                                    {type.type.name.toUpperCase()}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        : null}
+                    </div>
+                ))}
+            </div>
+        ) : <div>
+                Evolution chain loading
+            </div>
     );
 }
