@@ -2,6 +2,7 @@ import React, { useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import { PokemonFullDataContext } from "../../context/PokemonFullDataContext";
 import { ColorUtils } from "../../utils/ColorUtils";
+import '../../styles/PokemonHeader.css';
 import back from '../../assets/back.svg';
 
 export function PokemonHeader() {

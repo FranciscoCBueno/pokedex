@@ -5,6 +5,7 @@ import { PokemonFullDataContext } from "../../context/PokemonFullDataContext";
 import { ColorUtils } from "../../utils/ColorUtils";
 import { EvolutionChain } from "../../types/EvolutionChain";
 import { PokemonData } from "../../types/PokemonData";
+import "../../styles/PokemonEvolutionChain.css";
 
 export function PokemonEvolutionChain() {
     const { pokemonFullData } = useContext(PokemonFullDataContext);

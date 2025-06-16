@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useContext } from "react";
 import { PokemonFullDataContext } from "../../context/PokemonFullDataContext";
+import "../../styles/PokemonPicture.css";
 import star from '../../assets/star.svg';
 
 export function PokemonPicture() {

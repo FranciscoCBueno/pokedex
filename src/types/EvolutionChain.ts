@@ -69,12 +69,10 @@ export class EvolutionChain {
 
     static async getList(data: EvolutionChain): Promise<PokemonData[]> {
         const list: PokemonData[] = [];
-    
-        // Fetch the base Pokémon
+
         const selfRes = await axios.get(`https://pokeapi.co/api/v2/pokemon/${data.chain.species.name}`);
         list.push(selfRes.data);
     
-        // Recursively fetch all evolutions
         for (const evolution of data.chain.evolves_to) {
             const evolutionRes = await axios.get(`https://pokeapi.co/api/v2/pokemon/${evolution.species.name}`);
             list.push(evolutionRes.data);

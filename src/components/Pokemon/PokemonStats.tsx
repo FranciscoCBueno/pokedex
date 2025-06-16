@@ -2,6 +2,7 @@ import React from "react";
 import { useContext } from "react";
 import { PokemonFullDataContext } from "../../context/PokemonFullDataContext";
 import { ColorUtils } from "../../utils/ColorUtils";
+import '../../styles/PokemonStats.css';
 
 export function PokemonStats() {
     const { pokemonFullData } = useContext(PokemonFullDataContext);

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useCallback } from "react";
 import { ColorUtils } from "../../utils/ColorUtils";
 import { TypeDamageRelations } from "../../types/TypeDamageRelations";
 import { PokemonFullDataContext } from "../../context/PokemonFullDataContext";
+import "../../styles/PokemonTypeEffectiveness.css";
 
 export function PokemonTypeEffectiveness() {
     const { pokemonFullData } = useContext(PokemonFullDataContext);
