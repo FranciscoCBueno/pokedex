@@ -1,7 +1,7 @@
 import { PokemonData } from "./PokemonData";
 import axios from "axios";
 
-type Chain = {
+export type Chain = {
     evolution_details: {
         gender: number;
         held_item: {
@@ -40,6 +40,10 @@ type Chain = {
         relative_physical_stats: number | null;
         time_of_day: string | null;
         trade_species: {
+            name: string;
+            url: string;
+        } | null;
+        trigger: {
             name: string;
             url: string;
         } | null;
