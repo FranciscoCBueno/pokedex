@@ -40,6 +40,7 @@ Requirements:
   > Stats  
   > Type effectiveness  
   > Evolution chain  
+  > Playable Pokémon cry  
   > Responsiveness
 
 ## Features to be fixed/completed
@@ -51,7 +52,6 @@ Requirements:
 
 ## Planned features
 
-- Playable Pokémon cry
 - Moves list and their effectiveness
 - Locations found per game
 - Mega evolutions/Gigantamax/Alola forms
