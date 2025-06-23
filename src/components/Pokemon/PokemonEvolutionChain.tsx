@@ -31,12 +31,12 @@ export function PokemonEvolutionChain() {
         }
     }, [pokemonFullData.species.url]);
 
-    const getTypesFor = (name: string) => {
+    function getTypesFor (name: string) {
         const pokemon = evolutionChainList.find(p => p.name === name);
         return pokemon ? pokemon.types : [];
     };
 
-    const getSpritesFor = (name: string) => {
+    function getSpritesFor (name: string) {
         const pokemon = evolutionChainList.find(p => p.name === name);
         return pokemon ? pokemon.sprites.front_default : "Url not found";
     }

@@ -9,7 +9,7 @@ export const PokemonFullDataContext = createContext<{
     setPokemonFullData: () => {}
 });
 
-export const PokemonFullDataProvider = ({ children }: { children: React.ReactNode }) => {
+export function PokemonFullDataProvider ({ children }: { children: React.ReactNode }) {
     const [pokemonFullData, setPokemonFullData] = useState<PokemonFullData>(new PokemonFullData());
 
     const value = {

@@ -7,6 +7,7 @@ import { PokemonHeader } from '../components/Pokemon/PokemonHeader';
 import { PokemonPicture } from '../components/Pokemon/PokemonPicture';
 import { PokemonStats } from '../components/Pokemon/PokemonStats';
 import { PokemonTypeEffectiveness } from '../components/Pokemon/PokemonTypeEffectiveness';
+import { PokemonAbilities } from '../components/Pokemon/PokemonAbilities';
 import { PokemonEvolutionChain } from '../components/Pokemon/PokemonEvolutionChain';
 import { PokemonCry } from '../components/Pokemon/PokemonCry';
 
@@ -63,8 +64,9 @@ export function Pokemon() {
                     <div className="stat-section">
                         <PokemonStats/>
                         <PokemonTypeEffectiveness/>
+                        <PokemonAbilities/>
+                        <PokemonCry/>
                     </div>
-                    <PokemonCry/>
                 </div>
             </div>
         </div>

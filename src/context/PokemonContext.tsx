@@ -17,7 +17,7 @@ export const PokemonContext = createContext<{
     setFilters: () => {},
 });
 
-export const PokemonProvider = ({ children }: { children: ReactNode }) => {
+export function PokemonProvider ({ children }: { children: ReactNode }) {
     const [pokemonList, setPokemonList] = useState<PokemonData[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [filters, setFilters] = useState({});
