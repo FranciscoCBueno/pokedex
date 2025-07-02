@@ -23,3 +23,16 @@
 .back-btn:hover {
     background-color: #bbb;
 }
+
+.pokedex-entry {
+    width: max-content;
+    max-width: fit-content;
+    font-size: 16px;
+    font-style: italic;
+    border: double black;
+    padding: 0.5rem;
+    height: min-content;
+    align-self: center;
+    margin-right: 1rem;
+    font-style: bold;
+}

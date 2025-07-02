@@ -6,10 +6,10 @@ Technologies used:
 
 - React:
 
-  > react-router-dom  
-  > react context api  
-  > axios  
-  > useState, useEffect
+  - react-router-dom
+  - react context api
+  - axios
+  - useState, useEffect
 
 - Pokéapi:  
    https://pokeapi.co
@@ -20,8 +20,8 @@ Technologies used:
 
 Requirements:
 
-> Node.js  
-> Git
+- Node.js
+- Git
 
 1. Clone the repository
 2. Open a terminal inside the "src" folder
@@ -31,18 +31,19 @@ Requirements:
 ## Current features
 
 - National Pokédex list:
-  > Official sprites  
-  > Legendary or Mythical indicator  
-  > Each card is colored with it's Pokémon's colors
+  - Official sprites
+  - Legendary or Mythical indicator
+  - Each card is colored with it's Pokémon's colors
 - Detailed page for each Pokémon:
-  > Official artwork with shiny variant  
-  > Pokédex entry  
-  > Stats  
-  > Type effectiveness  
-  > Evolution chain  
-  > Playable Pokémon cry  
-  > Alternate forms  
-  > Responsiveness
+  - Official artwork with shiny variant
+  - Pokédex entry
+  - Stats
+  - Type effectiveness
+  - Evolution chain
+  - Playable Pokémon cry
+  - Alternate forms (Mega Evolutions, Gigantamax, Regional, etc)
+  - Abilities
+  - Responsiveness
 
 ## Features to be fixed/completed
 
@@ -55,9 +56,10 @@ Requirements:
 - Moves list and their effectiveness
 - Locations found per game
 - Filters for the Pokémon list:
-  > Type  
-  > Game  
-  > Generation
+  - Type
+  - Game
+  - Generation
+- Training stats (Base EXP, Capture rate, Base happiness, Growth rate)
 
 ## Planned implementations
 

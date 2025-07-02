@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback, useContext} from 'react';
+import React, {useEffect, useCallback, useContext} from 'react';
 import { useParams } from 'react-router-dom';
 import "../styles/Pokemon.css";
 import axios from 'axios';
@@ -13,8 +13,7 @@ import { PokemonCry } from '../components/Pokemon/PokemonCry';
 
 export function Pokemon() {
     const { id } = useParams<{ id: string }>();
-    const { pokemonFullData, setPokemonFullData } = useContext(PokemonFullDataContext);
-    const [pokedexEntry, setPokedexEntry] = useState<string | null>(null);
+    const { setPokemonFullData } = useContext(PokemonFullDataContext);
 
     const fetchPokemonFullData = useCallback(async () => {
         try {
@@ -23,35 +22,13 @@ export function Pokemon() {
         } catch (error) {
             console.error("Error fetching Pokemon data:", error);
         }
-    }, [id, setPokemonFullData]); 
-
-    const getPokedexEntry = useCallback(() => {
-        if (pokemonFullData && pokemonFullData.species && pokemonFullData.species.url) {
-            axios.get(pokemonFullData.species.url).then((response) => {
-                const entries = response.data.flavor_text_entries;
-                const englishEntries = entries.filter(
-                    (entry: { language: { name: string; } }) => entry.language.name === 'en'
-                );
-    
-                if (englishEntries.length > 0) {
-                    const latestEntry = englishEntries[englishEntries.length - 1];
-                    setPokedexEntry(latestEntry.flavor_text.replace(/[^\p{L}\p{N}.,'’ ]/gu, ' ').replace(/\s+/g, ' ').trim());
-                }
-            })
-        }
-    }, [pokemonFullData]);
+    }, [id, setPokemonFullData]);
 
     useEffect(() => {
         if (id) {
             fetchPokemonFullData();
         }
     }, [id, fetchPokemonFullData]);
-
-    useEffect(() => {
-        if (pokemonFullData) {
-            getPokedexEntry();
-        }
-    }, [pokemonFullData, getPokedexEntry]);
 
     return (
         <div className="pokemon-container">
@@ -60,7 +37,6 @@ export function Pokemon() {
                 <PokemonPicture/>
                 <PokemonEvolutionChain/>
                 <div className="pokemon-details">
-                    <h2 className="pokedex-entry">{pokedexEntry}</h2>
                     <div className="stat-section">
                         <PokemonStats/>
                         <PokemonTypeEffectiveness/>
