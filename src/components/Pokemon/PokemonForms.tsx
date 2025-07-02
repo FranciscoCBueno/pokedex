@@ -6,7 +6,7 @@ import "../../styles/PokemonForms.css";
 
 export function PokemonForms() {
     const { pokemonFullData } = useContext(PokemonFullDataContext);
-    const [forms, setForms] = useState<{ pokemon: { name: string; url: string } }[]>([]);
+    const [forms, setForms] = useState<{ is_default: boolean, pokemon: { name: string; url: string } }[]>([]);
     const [formSprites, setFormSprites] = useState<{ [name: string]: string }>({});
     const navigate = useNavigate();
 
@@ -54,7 +54,7 @@ export function PokemonForms() {
                 Alternate Forms:
                 <div className="forms-list">
                     {forms.map((form) => (
-                        form.pokemon.name !== pokemonFullData.name && (
+                        !form.is_default && (
                         <div key={form.pokemon.name} className="form-item" onClick={() => navigate(`/pokemon/${form.pokemon.name}`)}>
                             <div className="form-sprite">
                                 <img src={formSprites[form.pokemon.name] || "no url"} alt={form.pokemon.name} />

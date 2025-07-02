@@ -23,24 +23,3 @@
 .back-btn:hover {
     background-color: #bbb;
 }
-
-.pokemon-identification {
-    display: flex;
-}
-
-.pokemon-name {
-    display: flex;
-    font-size: 2rem;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    margin-right: 1rem;
-}
-
-.pokemon-types {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    margin-right: 1rem;
-}
