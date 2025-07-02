@@ -5,6 +5,7 @@ import { PokemonFullDataContext } from "../../context/PokemonFullDataContext";
 import { ColorUtils } from "../../utils/ColorUtils";
 import { EvolutionChain, Chain } from "../../types/EvolutionChain";
 import { PokemonData } from "../../types/PokemonData";
+import { PokemonForms } from "./PokemonForms";
 import "../../styles/PokemonEvolutionChain.css";
 
 export function PokemonEvolutionChain() {
@@ -190,6 +191,7 @@ export function PokemonEvolutionChain() {
                         </div>
                     ))}
                 </div>
+                <PokemonForms/>
             </div>
         ) : <div>
                 Evolution chain loading

@@ -41,6 +41,7 @@ Requirements:
   > Type effectiveness  
   > Evolution chain  
   > Playable Pokémon cry  
+  > Alternate forms  
   > Responsiveness
 
 ## Features to be fixed/completed
@@ -48,13 +49,12 @@ Requirements:
 - Search bar
 - Full responsiveness
 - Navbar
-- Evolution Chain
 
 ## Planned features
 
 - Moves list and their effectiveness
 - Locations found per game
-- Mega evolutions/Gigantamax/Alola forms
+- Alolan/Galarian/Hisuian forms
 - Filters for the Pokémon list:
   > Type  
   > Game  
