@@ -14,7 +14,7 @@ export function PokemonForms() {
         try {
             const response = await axios.get(pokemonFullData.species.url);
             const formsData = response.data.varieties;
-            setForms(formsData.slice(1));
+            setForms(formsData);
         } catch (error) {
             console.error("Error fetching forms data:", error);
         }
@@ -54,14 +54,16 @@ export function PokemonForms() {
                 Alternate Forms:
                 <div className="forms-list">
                     {forms.map((form) => (
+                        form.pokemon.name !== pokemonFullData.name && (
                         <div key={form.pokemon.name} className="form-item" onClick={() => navigate(`/pokemon/${form.pokemon.name}`)}>
                             <div className="form-sprite">
-                                <img src={formSprites[form.pokemon.name] || ""} alt={form.pokemon.name} />
+                                <img src={formSprites[form.pokemon.name] || "no url"} alt={form.pokemon.name} />
                             </div>
                             <div className="form-name">
                                 {form.pokemon.name.toUpperCase().split('-').join(' ')}
                             </div>
                         </div>
+                        )
                     ))}
                 </div>
             </div>

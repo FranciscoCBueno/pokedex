@@ -54,7 +54,6 @@ Requirements:
 
 - Moves list and their effectiveness
 - Locations found per game
-- Alolan/Galarian/Hisuian forms
 - Filters for the Pokémon list:
   > Type  
   > Game  
