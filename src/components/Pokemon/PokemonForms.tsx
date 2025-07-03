@@ -2,13 +2,16 @@ import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { PokemonFullDataContext } from "../../context/PokemonFullDataContext";
+import { ColorUtils } from "../../utils/ColorUtils";
 import "../../styles/PokemonForms.css";
 
 export function PokemonForms() {
     const { pokemonFullData } = useContext(PokemonFullDataContext);
     const [forms, setForms] = useState<{ is_default: boolean, pokemon: { name: string; url: string } }[]>([]);
     const [formSprites, setFormSprites] = useState<{ [name: string]: string }>({});
+    const [formTypes, setFormTypes] = useState<{ [name: string]: string[] }>({});
     const navigate = useNavigate();
+    const { getTypeColor } = new ColorUtils();
 
     const getForms = async () => {
         try {
@@ -20,12 +23,6 @@ export function PokemonForms() {
         }
     };
 
-    const getFormSprite = async(url: string) => {
-        const result = await axios.get(url);
-        const spriteUrl = result.data.sprites.front_default;
-        return spriteUrl ? spriteUrl : "URL not found";
-    };
-
     useEffect(() => {
         if (pokemonFullData && pokemonFullData.species && pokemonFullData.species.url) {
             getForms();
@@ -33,18 +30,21 @@ export function PokemonForms() {
     }, [pokemonFullData]);
 
     useEffect(() => {
-        const fetchSprites = async () => {
+        const fetchSpritesAndTypes = async () => {
             const sprites: { [name: string]: string } = {};
+            const types: { [name: string]: string[] } = {};
             await Promise.all(
                 forms.map(async (form) => {
-                    const sprite = await getFormSprite(form.pokemon.url);
-                    sprites[form.pokemon.name] = sprite;
+                    const result = await axios.get(form.pokemon.url);
+                    sprites[form.pokemon.name] = result.data.sprites.front_default || "URL not found";
+                    types[form.pokemon.name] = result.data.types.map((t: any) => t.type.name);
                 })
             );
             setFormSprites(sprites);
+            setFormTypes(types);
         };
         if (forms.length > 0) {
-            fetchSprites();
+            fetchSpritesAndTypes();
         }
     }, [forms]);
 
@@ -61,6 +61,13 @@ export function PokemonForms() {
                             </div>
                             <div className="form-name">
                                 {form.pokemon.name.toUpperCase().split('-').join(' ')}
+                            </div>
+                            <div className="form-types">
+                                {formTypes[form.pokemon.name]?.map((type) => (
+                                    <span key={type} className="pokemon-type" style={getTypeColor(type as keyof ColorUtils['typeColors'])}>
+                                        {type.toUpperCase()}
+                                    </span>
+                                ))}
                             </div>
                         </div>
                         )

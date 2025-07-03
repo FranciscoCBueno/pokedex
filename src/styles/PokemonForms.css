@@ -21,7 +21,7 @@
 .form-item {
     background-color: #e0e0e0;
     border-radius: 5px;
-    padding: 8px 2px;
+    padding: 0.5rem;
     margin: 5px 0;
     cursor: pointer;
     transition: transform ease 0.1s;
@@ -29,4 +29,17 @@
 
 .form-item:hover {
     transform: scale(1.05);
+}
+
+.form-name {
+    font-size: 16px;
+    margin: 2px;
+}
+
+.form-types {
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    gap: 5px;
+    font-size: 14px;
 }

@@ -58,6 +58,13 @@
     flex-direction: column;
     gap: 1rem;
     margin: 1rem 0;
+    background-color: #e0e0e0;
+    width: max-content;
+    align-self: center;
+    padding: 1rem;
+    box-sizing: border-box;
+    border-radius: 10px;
+    border: 1px solid darkgray;
 }
 
 .pokemon-name {
@@ -66,7 +73,6 @@
     text-align: center;
     justify-content: center;
     align-items: center;
-    margin-right: 1rem;
 }
 
 .pokemon-types {
@@ -74,5 +80,4 @@
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
-    margin-right: 1rem;
 }
