@@ -42,7 +42,7 @@ Requirements:
   - Evolution chain
   - Playable Pokémon cry
   - Alternate forms (Mega Evolutions, Gigantamax, Regional, etc)
-  - Training stats (Base EXP, Capture rate, Base happiness)
+  - Training stats (Base EXP, Capture rate, Base happiness, Growth rate)
   - Abilities
   - Responsiveness
 
