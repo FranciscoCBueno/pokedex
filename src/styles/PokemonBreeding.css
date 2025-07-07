@@ -1,0 +1,10 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.pokemon-breeding {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+}
