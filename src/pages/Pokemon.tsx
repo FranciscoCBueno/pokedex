@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import "../styles/Pokemon.css";
 import axios from 'axios';
 import { PokemonFullDataContext } from '../context/PokemonFullDataContext';
+import { PokemonSpeciesDataContext } from '../context/PokemonSpeciesDataContext';
 import { PokemonHeader } from '../components/Pokemon/PokemonHeader';
 import { PokemonPicture } from '../components/Pokemon/PokemonPicture';
 import { PokemonStats } from '../components/Pokemon/PokemonStats';
@@ -16,6 +17,7 @@ import { PokemonCry } from '../components/Pokemon/PokemonCry';
 export function Pokemon() {
     const { id } = useParams<{ id: string }>();
     const { setPokemonFullData } = useContext(PokemonFullDataContext);
+    const { setPokemonSpeciesData } = useContext(PokemonSpeciesDataContext);
 
     const fetchPokemonFullData = useCallback(async () => {
         try {
@@ -26,11 +28,21 @@ export function Pokemon() {
         }
     }, [id, setPokemonFullData]);
 
+    const fetchPokemonSpeciesData = useCallback(async () => {
+        try {
+            const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
+            setPokemonSpeciesData(response.data);
+        } catch (error) {
+            console.error("Error fetching Pokemon species data:", error);
+        }
+    }, [id, setPokemonSpeciesData]);
+
     useEffect(() => {
         if (id) {
             fetchPokemonFullData();
+            fetchPokemonSpeciesData();
         }
-    }, [id, fetchPokemonFullData]);
+    }, [id, fetchPokemonFullData, fetchPokemonSpeciesData]);
 
     return (
         <div className="pokemon-container">

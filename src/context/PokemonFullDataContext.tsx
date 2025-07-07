@@ -1,15 +1,15 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, Dispatch, SetStateAction, ReactNode } from "react";
 import { PokemonFullData } from "../types/PokemonFullData";
 
 export const PokemonFullDataContext = createContext<{
     pokemonFullData: PokemonFullData;
-    setPokemonFullData: React.Dispatch<React.SetStateAction<PokemonFullData>>;
+    setPokemonFullData: Dispatch<SetStateAction<PokemonFullData>>;
 }>({
     pokemonFullData: {} as PokemonFullData,
     setPokemonFullData: () => {}
 });
 
-export function PokemonFullDataProvider ({ children }: { children: React.ReactNode }) {
+export function PokemonFullDataProvider ({ children }: { children: ReactNode }) {
     const [pokemonFullData, setPokemonFullData] = useState<PokemonFullData>(new PokemonFullData());
 
     const value = {

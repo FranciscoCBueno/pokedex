@@ -28,6 +28,20 @@
     font-size: 25px;
 }
 
+.legendary-badge {
+    border: 3px solid gold;
+    padding: 10px;
+    border-radius: 0.5rem;
+    background-color: #f6f6f6;
+}
+
+.mythical-badge {
+    border: 3px solid magenta;
+    padding: 10px;
+    border-radius: 0.5rem;
+    background-color: #f6f6f6;
+}
+
 .shiny-button {
     height: max-content;
     cursor: pointer;

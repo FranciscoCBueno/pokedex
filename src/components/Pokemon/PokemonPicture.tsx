@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useContext } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
+import axios from "axios";
 import { PokemonFullDataContext } from "../../context/PokemonFullDataContext";
 import { ColorUtils } from "../../utils/ColorUtils";
 import "../../styles/PokemonPicture.css";
@@ -9,6 +9,25 @@ export function PokemonPicture() {
     const { pokemonFullData } = useContext(PokemonFullDataContext);
     const { getTypeColor } = new ColorUtils();
     const [shiny, setShiny] = useState(false);
+    const [isLegendary, setIsLegendary] = useState(false);
+    const [isMythical, setIsMythical] = useState(false);
+
+    const checkLegendaryOrMythical = useCallback(async (url: string) => {
+        try {
+            const response = await axios.get(url);
+            const speciesData = response.data;
+            setIsLegendary(speciesData.is_legendary);
+            setIsMythical(speciesData.is_mythical);
+        } catch (error) {
+            console.error("Error fetching species data:", error);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (pokemonFullData && pokemonFullData.species && pokemonFullData.species.url) {
+            checkLegendaryOrMythical(pokemonFullData.species.url);
+        }
+    }, [pokemonFullData, checkLegendaryOrMythical]);
 
     return (
         <div className="picture-container">
@@ -16,6 +35,11 @@ export function PokemonPicture() {
                 <div className="pokemon-id">
                     {pokemonFullData ? `#${pokemonFullData.id}` : "Loading ID..."}
                 </div>
+                { isLegendary ? (
+                    <div className="legendary-badge">Legendary</div>
+                ) : isMythical ? (
+                    <div className="mythical-badge">Mythical</div>
+                ) : null}
                 <button className='shiny-button' onClick={() => shiny ? setShiny(false) : setShiny(true)}>
                     <img className='star-icon' src={star} alt='switch to shiny button'/> Shiny
                 </button>
