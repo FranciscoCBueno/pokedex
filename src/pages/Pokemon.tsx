@@ -40,9 +40,14 @@ export function Pokemon() {
     useEffect(() => {
         if (id) {
             fetchPokemonFullData();
+        }
+    }, [id, fetchPokemonFullData]);
+
+    useEffect(() => {
+        if (id) {
             fetchPokemonSpeciesData();
         }
-    }, [id, fetchPokemonFullData, fetchPokemonSpeciesData]);
+    }, [id, fetchPokemonSpeciesData]);
 
     return (
         <div className="pokemon-container">

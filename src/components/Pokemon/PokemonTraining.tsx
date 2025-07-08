@@ -1,31 +1,14 @@
-import React, { useContext, useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import React, { useContext } from "react";
 import { PokemonFullDataContext } from "../../context/PokemonFullDataContext";
+import { PokemonSpeciesDataContext } from "../../context/PokemonSpeciesDataContext";
 import "../../styles/PokemonTraining.css";
 
 export function PokemonTraining() {
     const { pokemonFullData } = useContext(PokemonFullDataContext);
-    const [baseHappiness, setBaseHappiness] = useState<number | null>(null);
-    const [captureRate, setCaptureRate] = useState<number | null>(null);
-    const [growthRate, setGrowthRate] = useState<string | null>(null);
-
-    const fetchPokemonTrainingData = useCallback(async () => {
-        if (pokemonFullData && pokemonFullData.species && pokemonFullData.species.url) {
-            try {
-                const response = await axios.get(pokemonFullData.species.url);
-                const data = response.data;
-                setBaseHappiness(data.base_happiness);
-                setCaptureRate(data.capture_rate);
-                setGrowthRate(data.growth_rate.name);
-            } catch (error) {
-                console.error("Error fetching training data:", error);
-            }
-        }
-    }, [pokemonFullData]);
-
-    useEffect(() => {
-        fetchPokemonTrainingData();
-    }, [fetchPokemonTrainingData]);
+    const { pokemonSpeciesData } = useContext(PokemonSpeciesDataContext);
+    const baseHappiness = pokemonSpeciesData?.base_happiness || null;
+    const captureRate = pokemonSpeciesData?.capture_rate || null;
+    const growthRate = pokemonSpeciesData?.growth_rate?.name || null;
 
     return (
         <div className="pokemon-training">

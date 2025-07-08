@@ -1,31 +1,12 @@
-import React, { useContext, useState, useEffect, useCallback } from "react";
-import axios from "axios";
-import { PokemonFullDataContext } from "../../context/PokemonFullDataContext";
+import React, { useContext } from "react";
+import { PokemonSpeciesDataContext } from "../../context/PokemonSpeciesDataContext";
 import "../../styles/PokemonBreeding.css";
 
 export function PokemonBreeding() {
-    const { pokemonFullData } = useContext(PokemonFullDataContext);
-    const [eggGroups, setEggGroups] = useState<{name: string, url: string}[]>([]);
-    const [genderRate, setGenderRate] = useState<number>(4);
-    const [eggCycles, seteggCycles] = useState<number>(0);
-
-    const fetchBreedingData = useCallback(async () => {
-        try {
-            const response = await axios.get(pokemonFullData.species.url);
-            const data = response.data;
-            setEggGroups(data.egg_groups);
-            setGenderRate(data.gender_rate);
-            seteggCycles(data.hatch_counter);
-        } catch (error) {
-            console.error("Error fetching breeding data:", error);
-        }
-    }, [pokemonFullData.species.url]);
-
-    useEffect(() => {
-        if (pokemonFullData && pokemonFullData.species && pokemonFullData.species.url) {
-            fetchBreedingData();
-        }
-    }, [pokemonFullData, pokemonFullData.species, pokemonFullData.species.url, fetchBreedingData]);
+    const { pokemonSpeciesData } = useContext(PokemonSpeciesDataContext);
+    const eggGroups = pokemonSpeciesData?.egg_groups;
+    const genderRate = pokemonSpeciesData?.gender_rate;
+    const eggCycles = pokemonSpeciesData?.hatch_counter;
 
     return (
         <div className="pokemon-breeding">

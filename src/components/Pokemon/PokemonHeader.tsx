@@ -1,36 +1,25 @@
-import React, { useContext, useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { PokemonFullDataContext } from "../../context/PokemonFullDataContext";
+import { PokemonSpeciesDataContext } from "../../context/PokemonSpeciesDataContext";
 import '../../styles/PokemonHeader.css';
 import back from '../../assets/back.svg';
 
 export function PokemonHeader() {
-    const { pokemonFullData } = useContext(PokemonFullDataContext);
-    const [pokedexEntry, setPokedexEntry] = useState<string | null>(null);
+    const { pokemonSpeciesData } = useContext(PokemonSpeciesDataContext);
+    const [pokedexEntry, setPokedexEntry] = useState<string>("");
     const navigate = useNavigate();
 
-    const getPokedexEntry = useCallback(() => {
-        if (pokemonFullData && pokemonFullData.species && pokemonFullData.species.url) {
-            axios.get(pokemonFullData.species.url).then((response) => {
-                const entries = response.data.flavor_text_entries;
-                const englishEntries = entries.filter(
-                    (entry: { language: { name: string; } }) => entry.language.name === 'en'
-                );
-    
-                if (englishEntries.length > 0) {
-                    const latestEntry = englishEntries[englishEntries.length - 1];
-                    setPokedexEntry(latestEntry.flavor_text.replace(/[^\p{L}\p{N}.,'’ ]/gu, ' ').replace(/\s+/g, ' ').trim());
-                }
-            })
-        }
-    }, [pokemonFullData]);
-
     useEffect(() => {
-            if (pokemonFullData) {
-                getPokedexEntry();
+        if (pokemonSpeciesData && pokemonSpeciesData.flavor_text_entries) {
+            const englishEntries = pokemonSpeciesData.flavor_text_entries.filter(
+                (entry: { language: { name: string; } }) => entry.language.name === 'en'
+            );
+            if (englishEntries.length > 0) {
+                const latestEntry = englishEntries[englishEntries.length - 1];
+                setPokedexEntry(latestEntry.flavor_text.replace(/[^\p{L}\p{N}.,'’ ]/gu, ' ').replace(/\s+/g, ' ').trim());
             }
-    }, [pokemonFullData, getPokedexEntry]);
+        }
+    }, [pokemonSpeciesData]);
 
     return (
         <div className="pokemon-header">

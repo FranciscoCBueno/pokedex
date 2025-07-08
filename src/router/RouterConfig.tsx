@@ -4,6 +4,7 @@ import App from "../App";
 import { Home } from "../pages/Home";
 import { Pokemon } from "../pages/Pokemon";
 import { PokemonFullDataProvider } from "../context/PokemonFullDataContext";
+import { PokemonSpeciesDataProvider } from "../context/PokemonSpeciesDataContext";
 
 export const Routes = createBrowserRouter([
     {
@@ -22,7 +23,9 @@ export const Routes = createBrowserRouter([
                 path: '/pokemon/:id',
                 element: (
                     <PokemonFullDataProvider>
-                        <Pokemon/>
+                        <PokemonSpeciesDataProvider>
+                            <Pokemon/>
+                        </PokemonSpeciesDataProvider>
                     </PokemonFullDataProvider>
                 )
             }

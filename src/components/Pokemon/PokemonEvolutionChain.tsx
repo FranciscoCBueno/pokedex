@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { PokemonFullDataContext } from "../../context/PokemonFullDataContext";
+import { PokemonSpeciesDataContext } from "../../context/PokemonSpeciesDataContext";
 import { ColorUtils } from "../../utils/ColorUtils";
 import { EvolutionChain, Chain } from "../../types/EvolutionChain";
 import { PokemonData } from "../../types/PokemonData";
@@ -9,28 +9,27 @@ import { PokemonForms } from "./PokemonForms";
 import "../../styles/PokemonEvolutionChain.css";
 
 export function PokemonEvolutionChain() {
-    const { pokemonFullData } = useContext(PokemonFullDataContext);
+    const { pokemonSpeciesData } = useContext(PokemonSpeciesDataContext);
     const [ evolutionChain, setEvolutionChain ] = useState<EvolutionChain | null>(null);
     const [ evolutionChainList, setEvolutionChainList ] = useState<PokemonData[]>([]);
     const { getTypeColor } = new ColorUtils();
     const navigate = useNavigate();
 
     const getEvolutionChain = useCallback(async () => {
-        const speciesUrl = pokemonFullData.species.url;
-        try {
-            const speciesResponse = await axios.get(speciesUrl);
-            const evolutionChainUrl = speciesResponse.data.evolution_chain.url;
-            const evolutionChainResponse = await axios.get(evolutionChainUrl);
-            setEvolutionChain(new EvolutionChain(evolutionChainResponse.data));
-            let evolutionData : PokemonData[] = await EvolutionChain.getList(evolutionChainResponse.data);
-            evolutionData = evolutionData.filter(
-                (item: any) => item && item.name && item.types
-            );
-            setEvolutionChainList(evolutionData);
-        } catch (error) {
-            console.error("Error fetching evolution chain:", error);
+        if (pokemonSpeciesData && pokemonSpeciesData.evolution_chain && pokemonSpeciesData.evolution_chain.url) {
+            try {
+                const evolutionChainResponse = await axios.get(pokemonSpeciesData.evolution_chain.url);
+                setEvolutionChain(new EvolutionChain(evolutionChainResponse.data));
+                let evolutionData : PokemonData[] = await EvolutionChain.getList(evolutionChainResponse.data);
+                evolutionData = evolutionData.filter(
+                    (item: any) => item && item.name && item.types
+                );
+                setEvolutionChainList(evolutionData);
+            } catch (error) {
+                console.error("Error fetching evolution chain:", error);
+            }
         }
-    }, [pokemonFullData.species.url]);
+    }, [pokemonSpeciesData]);
 
     function getTypesFor (name: string) {
         const pokemon = evolutionChainList.find(p => p.name === name);
@@ -119,10 +118,10 @@ export function PokemonEvolutionChain() {
     }
 
     useEffect(() => {
-        if (pokemonFullData && pokemonFullData.species && pokemonFullData.species.url) {
+        if (pokemonSpeciesData) {
             getEvolutionChain();
         }
-    }, [pokemonFullData, getEvolutionChain]);
+    }, [pokemonSpeciesData, getEvolutionChain]);
 
     return (
         evolutionChain ? (

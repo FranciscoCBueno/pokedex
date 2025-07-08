@@ -1,33 +1,17 @@
-import React, { useContext, useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import React, { useContext, useState } from "react";
 import { PokemonFullDataContext } from "../../context/PokemonFullDataContext";
+import { PokemonSpeciesDataContext } from "../../context/PokemonSpeciesDataContext";
 import { ColorUtils } from "../../utils/ColorUtils";
 import "../../styles/PokemonPicture.css";
 import star from '../../assets/star.svg';
 
 export function PokemonPicture() {
     const { pokemonFullData } = useContext(PokemonFullDataContext);
+    const { pokemonSpeciesData } = useContext(PokemonSpeciesDataContext);
     const { getTypeColor } = new ColorUtils();
     const [shiny, setShiny] = useState(false);
-    const [isLegendary, setIsLegendary] = useState(false);
-    const [isMythical, setIsMythical] = useState(false);
-
-    const checkLegendaryOrMythical = useCallback(async (url: string) => {
-        try {
-            const response = await axios.get(url);
-            const speciesData = response.data;
-            setIsLegendary(speciesData.is_legendary);
-            setIsMythical(speciesData.is_mythical);
-        } catch (error) {
-            console.error("Error fetching species data:", error);
-        }
-    }, []);
-
-    useEffect(() => {
-        if (pokemonFullData && pokemonFullData.species && pokemonFullData.species.url) {
-            checkLegendaryOrMythical(pokemonFullData.species.url);
-        }
-    }, [pokemonFullData, checkLegendaryOrMythical]);
+    const isLegendary = pokemonSpeciesData?.is_legendary || false;
+    const isMythical = pokemonSpeciesData?.is_mythical || false;
 
     return (
         <div className="picture-container">
