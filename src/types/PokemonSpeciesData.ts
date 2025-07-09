@@ -20,6 +20,21 @@ export interface PokemonSpeciesData {
     evolution_chain: {
         url: string;
     };
+    habitat: {
+        name: string;
+        url: string;
+    };
+    shape: {
+        name: string;
+        url: string;
+    };
+    genera: {
+        genus: string;
+        language: {
+            name: string;
+            url: string;
+        }
+    }[];
     flavor_text_entries: {
         flavor_text: string;
         language: {

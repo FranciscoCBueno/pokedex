@@ -1,0 +1,12 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.additional-info {
+    margin-top: 1rem;
+}
+
+.additional-info li {
+    margin-left: 0.5rem;
+}
