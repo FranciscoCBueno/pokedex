@@ -11,6 +11,10 @@ export function PokemonBreeding() {
     return (
         <div className="pokemon-breeding">
             Breeding:
+            <li>
+                Gender Rate:
+                {genderRate === -1 ? " Genderless" : ` ${(8-genderRate)/8*100}% Male, ${(genderRate/8)*100}% Female`}
+            </li>
             <li className="egg-groups">
                 Egg Groups:
                 {eggGroups ? eggGroups.map((group, index) => (
@@ -18,10 +22,6 @@ export function PokemonBreeding() {
                         {" " + group.name.charAt(0).toUpperCase() + group.name.slice(1).split("-").join(" ") + (index < eggGroups.length - 1 ? ", " : "")}
                     </span>
                 )) : " No egg groups available."}
-            </li>
-            <li>
-                Gender Rate:
-                {genderRate === -1 ? " Genderless" : ` ${(8-genderRate)/8*100}% Male, ${(genderRate/8)*100}% Female`}
             </li>
             <li>
                 Egg Cycles:

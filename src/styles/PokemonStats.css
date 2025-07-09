@@ -3,13 +3,11 @@
     padding: 0;
 }
 
-.pokemon-stats, .lists-container {
+.pokemon-stats {
     display: flex;
+    flex-direction: column;
     margin-top: 1rem;
     gap: 1rem;
-}
-
-.pokemon-stats {
     width: max-content;
 }
 
@@ -17,6 +15,8 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    padding-left: 0.5rem;
+    box-sizing: border-box;
 }
 
 .stat-item {

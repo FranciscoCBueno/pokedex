@@ -6,6 +6,8 @@
 .lists-container {
     height: max-content;
     display: flex;
+    margin-top: 1rem;
+    gap: 1rem;
 }
 
 .type-effectiveness {

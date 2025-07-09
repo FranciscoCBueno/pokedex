@@ -10,7 +10,7 @@ export function PokemonStats() {
 
     return (
         <div className="pokemon-stats">
-            Stats:
+            Base Stats:
             <div className="stats-list">
                 {pokemonFullData ? pokemonFullData.stats.map((stat, index) => (
                     <div key={index} className="stat-item" style={getStatColor(stat.stat.name as keyof ColorUtils['statColors'])}>
