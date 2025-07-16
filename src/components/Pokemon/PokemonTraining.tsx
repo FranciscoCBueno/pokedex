@@ -12,19 +12,28 @@ export function PokemonTraining() {
 
     return (
         <div className="pokemon-training">
-           Training:
-           <li className="base-experience">
-                {pokemonFullData.base_experience ? `Base EXP: ${pokemonFullData.base_experience}` : "N/A"}
-           </li>
-            <li className="base-happiness">
-                 {baseHappiness !== null ? `Base Happiness: ${baseHappiness}` : "N/A"}
-            </li>
-            <li className="capture-rate">
-                {captureRate !== null ? `Capture Rate: ${captureRate}` : "N/A"}
-            </li>
-            <li className="growth-rate">
-                {growthRate ? `Growth Rate: ${growthRate.split('-').join(' ')}` : "N/A"}
-            </li>
+           Training
+           <hr />
+           <div className="training-values" id="upper">
+                <div className="training-item" id="base-experience">
+                    <span>Base EXP:</span>
+                    <br />
+                    <span>{pokemonFullData.base_experience ?? "N/A"}</span>
+                </div>
+                <div className="training-item" id="capture-rate">
+                    <span>Capture Rate:</span>
+                    <br />
+                    <span>{captureRate !== null ? captureRate : "N/A"}</span>
+                </div>
+            </div>
+            <div className="training-values" id="lower">
+                <div className="training-item" id="base-happiness">
+                    <span>{baseHappiness !== null ? `Base Happiness: ${baseHappiness}` : "N/A"}</span>
+                </div>
+                <div className="training-item" id="growth-rate">
+                    <span>{growthRate ? `Growth Rate: ${growthRate.split('-').join(' ')}` : "N/A"}</span>
+                </div>
+            </div>
         </div>
     );
 }

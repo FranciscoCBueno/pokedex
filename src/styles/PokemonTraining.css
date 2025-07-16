@@ -6,9 +6,38 @@
 .pokemon-training {
     display: flex;
     flex-direction: column;
+    gap: 5px;
     margin-top: 1rem;
+    height: min-content;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+    background: linear-gradient(180deg, #ff3333 55%, #fff 55%);
 }
 
-.pokemon-training li {
-    margin-left: 0.5rem;
+.training-values {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+#lower {
+    flex-direction: column;
+    padding: 0 5px;
+}
+
+.training-item {
+    padding: 5px;
+    border-radius: 5px;
+    background-color: rgba(220, 220, 220, 0.8);
+}
+
+#base-experience, #capture-rate {
+    width: 100px;
+}
+
+#base-happiness, #growth-rate {
+    width: 100%;
 }

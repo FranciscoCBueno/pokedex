@@ -4,12 +4,30 @@
 }
 
 .pokemon-abilities {
+    display: flex;
+    flex-direction: column;
     margin-top: 1rem;
+    border: 1px solid black;
+    border-radius: 5px;
+    height: min-content;
+    padding: 5px;
+    gap: 5px;
+    text-align: center;
 }
 
 .abilities-list {
+    text-align: left;
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
-    margin-left: 1.5rem;
+    gap: 5px;
+}
+
+.ability-item {
+    background-color: #c9c9c9;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#hidden-ability {
+    border: 1px dashed #808080;
 }

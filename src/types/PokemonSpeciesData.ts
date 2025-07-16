@@ -9,6 +9,10 @@ export interface PokemonSpeciesData {
     is_legendary: boolean;
     is_mythical: boolean;
     hatch_counter: number;
+    generation: {
+        name: string;
+        url: string;
+    };
     growth_rate: {
         name: string;
         url: string;
@@ -18,10 +22,6 @@ export interface PokemonSpeciesData {
         url: string;
     }[];
     evolution_chain: {
-        url: string;
-    };
-    habitat: {
-        name: string;
         url: string;
     };
     shape: {

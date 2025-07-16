@@ -14,15 +14,16 @@ export function PokemonAbilities() {
 
     return (
         <div className="pokemon-abilities">
-            Abilities:
-            <ul className="abilities-list">
+            Abilities
+            <hr />
+            <div className="abilities-list">
                 {pokemonFullData?.abilities?.map((ability: any, index: number) => (
-                    <li key={index} className="ability-item">
+                    <div key={index} className="ability-item" id={ability.is_hidden ? "hidden-ability" : "normal-ability"}>
                         <span className="ability-name">{formatAbilityName(ability.ability.name)}</span>
                         {ability.is_hidden && <span className="hidden-ability"> (Hidden)</span>}
-                    </li>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 }

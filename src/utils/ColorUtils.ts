@@ -27,6 +27,23 @@ export class ColorUtils {
         'special-defense': 'rgba(128, 0, 128, 0.5)',
         speed: 'rgba(255, 255, 0, 0.5)'
     }
+    eggGroupColors = {
+        monster: '#FFB6C1',
+        water1: '#ADD8E6',
+        water2: '#87CEFA',
+        water3: '#4682B4',
+        bug: '#98FB98',
+        flying: '#FFD700',
+        ground: '#FF6347',
+        fairy: '#FF69B4',
+        plant: '#32CD32',
+        humanshape: '#FF4500',
+        mineral: '#B0C4DE',
+        amorphous: '#F0E68C',
+        ditto: '#DDA0DD',
+        dragon: '#8A2BE2',
+        indeterminate: '#929292'
+    }
 
     getTypeColor = (type: keyof typeof this.typeColors) => {
         return {backgroundColor: this.typeColors[type] || '#FFF'};
@@ -34,5 +51,9 @@ export class ColorUtils {
 
     getStatColor = (stat: keyof typeof this.statColors) => {
         return {backgroundColor: this.statColors[stat] || '#FFF'};
+    }
+
+    getEggColor = (eggGroup: keyof typeof this.eggGroupColors) => {
+        return {backgroundColor: this.eggGroupColors[eggGroup] || '#222'};
     }
 }

@@ -7,8 +7,95 @@
     margin-top: 1rem;
     display: flex;
     flex-direction: column;
+    text-align: center;
+    border: 1px black solid;
+    border-radius: 5px;
+    height: fit-content;
+    padding: 5px;
+    gap: 5px;
 }
 
-.pokemon-breeding li {
-    margin-left: 0.5rem;
+.egg-groups {
+    display: flex;
+    flex-direction: column;
+    background-color: #c9c9c9;
+    border-radius: 5px;
+    padding: 5px;
+    gap: 5px;
+}
+
+.egg-group-list {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.egg-group {
+    color: white;
+    text-align: center;
+    padding: 3px;
+    border-radius: 6px;
+    border: solid 2px white;
+}
+
+.egg-cycles {
+    background-color: #c9c9c9;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.genderless {
+    background-color: #c9c9c9;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.gender-rate {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #c9c9c9;
+    border-radius: 5px;
+    padding: 5px;
+    gap: 5px;
+}
+
+.genders {
+    display: flex;
+    gap: 5px;
+}
+
+.male, .female {
+    display: flex;
+    align-items: center;
+    background-color: #d7d7d7;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.male-icon, .female-icon, .genderless-icon {
+    height: 30px;
+}
+
+.male {
+    border: 1px solid #00bbff;
+}
+
+.female {
+    border: 1px solid #ff00aa;
+}
+
+.genderless {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.genderless-icon {
+    padding: 5px;
+    background-color: #d7d7d7;
+    border-radius: 5px;
+    border: 1px solid #555;
 }

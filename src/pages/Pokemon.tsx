@@ -57,15 +57,17 @@ export function Pokemon() {
                 <PokemonPicture/>
                 <PokemonEvolutionChain/>
                 <div className="pokemon-details">
-                    <div className="stat-section">
-                        <PokemonStats/>
-                        <PokemonTypeEffectiveness/>
-                        <PokemonAbilities/>
+                    <PokemonStats/>
+                    <div className="details-1">
                         <PokemonTraining/>
+                        <PokemonAbilities/>
+                    </div>
+                    <div className="details-2">
                         <PokemonBreeding/>
                         <PokemonAdditionalInfo/>
-                        <PokemonCry/>
                     </div>
+                    <PokemonCry/>
+                    <PokemonTypeEffectiveness/>
                 </div>
             </div>
         </div>

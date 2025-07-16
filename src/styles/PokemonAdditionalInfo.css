@@ -5,8 +5,32 @@
 
 .additional-info {
     margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+    height: min-content;
+    text-align: center;
 }
 
-.additional-info li {
-    margin-left: 0.5rem;
+.info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    background-color: #c9c9c9;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.shape-icon {
+    height: 20px;
+    margin-left: 2px;
 }

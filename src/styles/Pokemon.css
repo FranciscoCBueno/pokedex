@@ -24,12 +24,13 @@
 
 .pokemon-details {
     display: flex;
-    flex-direction: column;
     background-color: #e0e0e0;
     width: 100%;
     padding: 0 1rem;
     box-sizing: border-box;
     border-top: 1px solid #555;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 .pokedex-entry {
@@ -39,12 +40,6 @@
     font-style: italic;
     border: double black;
     padding: 0.5rem;
-}
-
-.stat-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
 }
 
 @media screen and (max-width: 1420px) {

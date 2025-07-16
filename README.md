@@ -15,6 +15,8 @@ Technologies used:
    https://pokeapi.co
 - ColorThief:  
    https://lokeshdhakar.com/projects/color-thief/
+- Cloudinary:  
+   https://cloudinary.com
 
 ## Running the code
 
@@ -43,8 +45,9 @@ Requirements:
   - Playable Pokémon cry
   - Alternate forms (Mega Evolutions, Gigantamax, Regional, etc)
   - Training stats (Base EXP, Capture rate, Base happiness, Growth rate)
+  - Breeding information (Egg groups, Egg cycles, Gender rate)
+  - Additional Info (Shape and Genus)
   - Abilities
-  - Responsiveness
 
 ## Features to be fixed/completed
 
