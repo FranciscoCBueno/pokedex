@@ -6,13 +6,18 @@
 .lists-container {
     height: max-content;
     display: flex;
-    margin-top: 1rem;
-    gap: 1rem;
+    flex-direction: column;
+    gap: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
 }
 
 .type-effectiveness {
     display: flex;
     justify-content: center;
+    height: min-content;
+    max-width: 700px;
 }
 
 .weaknesses-list, .resistances-list, .immunities-list {
@@ -20,11 +25,14 @@
     flex-direction: column;
     flex-wrap: wrap;
     gap: 5px;
+    background-color: #c9c9c9;
+    padding: 5px;
+    border-radius: 5px;
 }
 
 .type-list {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 5px;
 }
 

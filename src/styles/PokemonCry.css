@@ -4,10 +4,15 @@
 }
 
 .pokemon-cry {
-    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+    height: min-content;
+    gap: 5px;
 }
 
 .pokemon-cry-title {
-    margin-bottom: 5px;
     margin-left: 5px;
 }

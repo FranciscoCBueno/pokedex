@@ -1,0 +1,51 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.pokemon-generations {
+    display: flex;
+    flex-direction: column;
+    height: min-content;
+    padding: 5px;
+    margin-top: 1rem;
+    border: 1px solid black;
+    border-radius: 5px;
+    gap: 5px;
+    padding: 5px;
+}
+
+.gen-introduced {
+    padding: 5px;
+    background-color: #c0c0c0;
+    border-radius: 5px;
+}
+
+.game-indices {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    max-height: 247px;
+    padding: 5px;
+    background-color: #c0c0c0;
+    border-radius: 5px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #909090 #c0c0c0;
+}
+
+.game-indices::-webkit-scrollbar {
+    width: 8px;
+    background: #b0b0b0;
+}
+
+.game-indices::-webkit-scrollbar-thumb {
+    background: #b0b0b0;
+    border-radius: 4px;
+}
+
+.game-item {
+    padding: 5px;
+    border-radius: 5px;
+    border: 2px solid white;
+}

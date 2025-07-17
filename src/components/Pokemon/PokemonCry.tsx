@@ -10,8 +10,9 @@ export function PokemonCry() {
     return (
         <div className="pokemon-cry">
             <div className="pokemon-cry-title">
-                Hear cry:
+                Hear cry
             </div>
+            <hr />
             {cryUrl ? (
                 <audio controls key={key} className="pokemon-cry-audio">
                     <source src={cryUrl} />

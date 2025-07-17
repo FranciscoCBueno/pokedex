@@ -17,7 +17,7 @@
     max-height: 720px;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: #b0b0b0 #f0f0f0;
+    scrollbar-color: #909090 #c9c9c9;
 }
 
 .pokemon-evolution-chain::-webkit-scrollbar {

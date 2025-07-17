@@ -30,7 +30,11 @@
     box-sizing: border-box;
     border-top: 1px solid #555;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 1.5rem;
+}
+
+.details-1, .details-2 {
+    height: fit-content;
 }
 
 .pokedex-entry {

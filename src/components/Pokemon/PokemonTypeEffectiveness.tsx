@@ -26,6 +26,8 @@ export function PokemonTypeEffectiveness() {
         <div className="type-effectiveness">
             {damageRelations ? (
                 <div className="lists-container">
+                    Type Effectiveness
+                    <hr />
                     <div className="weaknesses-list">
                         Weaknesses:
                         <div className="type-list">

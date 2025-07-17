@@ -44,6 +44,39 @@ export class ColorUtils {
         dragon: '#8A2BE2',
         indeterminate: '#929292'
     }
+    gameColors = {
+        red: '#FF4444',
+        blue: '#4444FF',
+        yellow: '#FFFF44',
+        green: '#008000',
+        silver: '#C0C0C0',
+        gold: '#FFD700',
+        crystal: '#22EEEE',
+        ruby: '#FF2200',
+        sapphire: '#1E90FF',
+        emerald: '#50C878',
+        firered: '#FF4500',
+        leafgreen: '#228B22',
+        diamond: '#07d0c9',
+        pearl: '#E5E4E2',
+        platinum: '#D3D3D3',
+        heartgold: '#FFB500',
+        soulsilver: '#C0C0D1',
+        black: '#000000',
+        white: '#FFFFFF',
+        'black-2': '#000000',
+        'white-2': '#FFFFFF',
+        x : '#5500FF',
+        y : '#990000',
+        sun: '#FFA500',
+        moon: '#8A2BE2',
+        sword: '#C0C0C0',
+        shield: '#707070',
+        scarlet: '#FF6347',
+        violet: '#8A2BE2',
+        legends: '#00FF00',
+        arceus: '#FF4500'
+    }
 
     getTypeColor = (type: keyof typeof this.typeColors) => {
         return {backgroundColor: this.typeColors[type] || '#FFF'};
@@ -55,5 +88,12 @@ export class ColorUtils {
 
     getEggColor = (eggGroup: keyof typeof this.eggGroupColors) => {
         return {backgroundColor: this.eggGroupColors[eggGroup] || '#222'};
+    }
+
+    getGameColor = (game: keyof typeof this.gameColors) => {
+        if (this.gameColors[game] === "#000000") {
+            return {backgroundColor: this.gameColors[game], color: '#FFF'};
+        }
+        return {backgroundColor: this.gameColors[game] || '#FFF'};
     }
 }

@@ -12,6 +12,7 @@ import { PokemonAbilities } from '../components/Pokemon/PokemonAbilities';
 import { PokemonTraining } from '../components/Pokemon/PokemonTraining';
 import { PokemonBreeding } from '../components/Pokemon/PokemonBreeding';
 import { PokemonAdditionalInfo } from '../components/Pokemon/PokemonAdditionalInfo';
+import { PokemonGenerations } from '../components/Pokemon/PokemonGenerations';
 import { PokemonEvolutionChain } from '../components/Pokemon/PokemonEvolutionChain';
 import { PokemonCry } from '../components/Pokemon/PokemonCry';
 
@@ -66,8 +67,9 @@ export function Pokemon() {
                         <PokemonBreeding/>
                         <PokemonAdditionalInfo/>
                     </div>
-                    <PokemonCry/>
+                    <PokemonGenerations/>
                     <PokemonTypeEffectiveness/>
+                    <PokemonCry/>
                 </div>
             </div>
         </div>
