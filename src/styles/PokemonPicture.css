@@ -42,6 +42,13 @@
     background-color: #f6f6f6;
 }
 
+.baby-badge {
+    border: 3px solid lightblue;
+    padding: 10px;
+    border-radius: 0.5rem;
+    background-color: #f6f6f6;
+}
+
 .shiny-button {
     height: max-content;
     cursor: pointer;

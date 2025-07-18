@@ -12,6 +12,7 @@ export function PokemonPicture() {
     const [shiny, setShiny] = useState(false);
     const isLegendary = pokemonSpeciesData?.is_legendary || false;
     const isMythical = pokemonSpeciesData?.is_mythical || false;
+    const isBaby = pokemonSpeciesData?.is_baby || false;
 
     return (
         <div className="picture-container">
@@ -23,6 +24,8 @@ export function PokemonPicture() {
                     <div className="legendary-badge">Legendary</div>
                 ) : isMythical ? (
                     <div className="mythical-badge">Mythical</div>
+                ) : isBaby ? (
+                    <div className="baby-badge">Baby</div>
                 ) : null}
                 <button className='shiny-button' onClick={() => shiny ? setShiny(false) : setShiny(true)}>
                     <img className='star-icon' src={star} alt='switch to shiny button'/> Shiny

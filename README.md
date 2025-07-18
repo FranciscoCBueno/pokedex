@@ -48,6 +48,7 @@ Requirements:
   - Breeding information (Egg groups, Egg cycles, Gender rate)
   - Additional Info (Shape and Genus)
   - Abilities
+  - Original generations and game indices
 
 ## Features to be fixed/completed
 
