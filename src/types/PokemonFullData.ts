@@ -50,6 +50,7 @@ export class PokemonFullData {
                 name: string;
                 url: string;
             };
+            order: number;
             version_group: {
                 name: string;
                 url: string;

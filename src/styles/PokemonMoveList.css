@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.pokemon-move-list {
+    width: 50%;
+    padding: 1.5rem;
+}
+
+.move-list {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    gap: 5px;
+}
+
+.move-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
