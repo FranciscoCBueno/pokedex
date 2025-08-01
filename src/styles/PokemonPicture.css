@@ -6,7 +6,9 @@
 .picture-container {
     display: flex;
     flex-direction: column;
-    margin-top: 1rem;
+    padding-top: 1rem;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid black;
 }
 
 .pokemon-picture {

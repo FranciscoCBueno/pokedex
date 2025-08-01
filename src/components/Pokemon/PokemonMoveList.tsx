@@ -32,6 +32,7 @@ export function PokemonMoveList() {
     return (
         <div className="pokemon-move-list">
             <h2 className="move-list-title">Moves</h2>
+            <hr />
             <div className="move-list">
                 {moves.map((move) => (
                     <div className="move-item" key={move.name}>
