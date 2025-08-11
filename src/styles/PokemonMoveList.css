@@ -10,8 +10,8 @@
     width: fit-content;
     padding: 1.5rem;
     border: 1px solid black;
-    padding: 10px;
     border-radius: 5px;
+    padding: 10px;
     margin: 1rem;
 }
 
@@ -23,14 +23,46 @@
 
 .move-item {
     display: flex;
+    flex-direction: column;
+    gap: 5px;
     justify-content: space-between;
     padding: 10px;
     border-radius: 5px;
     background-color: #e0e0e0;
+    width: fit-content;
+}
+
+.move-header {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.sections {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
 }
 
 .section {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    background-color: #c9c9c9;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+#section-2 {
     gap: 10px;
+}
+
+.move-stat-none {
+    margin: 3px;
+}
+
+.move-type-effectiveness {
+    display: flex;
+    gap: 5px;
+    align-items: center;
 }
