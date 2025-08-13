@@ -11,6 +11,52 @@
     background-color: rgb(226, 226, 226);
 }
 
+.header {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 1.5rem 0 1.5rem;
+    background-color: #d0d0d0;
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+}
+
+.welcome-text, .about-text {
+    background-color: #c0c0c0;
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.title {
+    margin: 0 0 10px 0;
+}
+
+.paragraphs-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.link {
+    color: black;
+}
+
+.link:hover {
+    color: blue;
+}
+
+.pokedex-image {
+    height: 300px;
+    margin: 2rem;
+}
+
 .search {
     display: flex;
     align-items: center;
@@ -39,4 +85,8 @@
     width: 100%;
     max-width: 1200px;
     padding: 1rem;
+}
+
+.loading-text {
+    margin: 1.5rem;
 }

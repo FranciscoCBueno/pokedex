@@ -16,6 +16,7 @@ import { PokemonGenerations } from '../components/Pokemon/PokemonGenerations';
 import { PokemonEvolutionChain } from '../components/Pokemon/PokemonEvolutionChain';
 import { PokemonCry } from '../components/Pokemon/PokemonCry';
 import { PokemonMoveList } from '../components/Pokemon/PokemonMoveList';
+import { PokemonLocationsList } from '../components/Pokemon/PokemonLocationsList';
 
 export function Pokemon() {
     const { id } = useParams<{ id: string }>();
@@ -73,7 +74,10 @@ export function Pokemon() {
                     <PokemonCry/>
                 </div>
             </div>
-            <PokemonMoveList/>
+            <div className="lists">
+                <PokemonLocationsList/>
+                <PokemonMoveList/>
+            </div>
         </div>
     );
 }

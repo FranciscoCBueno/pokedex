@@ -36,7 +36,8 @@ Requirements:
   - Official sprites
   - Legendary or Mythical indicator
   - Each card is colored with it's Pokémon's colors
-  - Detailed page for each Pokémon:
+
+Detailed page for each Pokémon:
   - Official artwork with shiny variant
   - Pokédex entry
   - Stats
@@ -49,13 +50,14 @@ Requirements:
   - Additional Info (Shape and Genus)
   - Abilities
   - Original generations and game indices
+  - Moves list
 
 ## Features to be fixed/completed
 
 - Search bar
 - Full responsiveness
 - Navbar
-- Moves list and their effectiveness
+- Encounter locations list
 
 ## Planned features
 

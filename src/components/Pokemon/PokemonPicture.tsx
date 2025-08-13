@@ -16,7 +16,7 @@ export function PokemonPicture() {
 
     return (
         <div className="picture-container">
-            <div className="header">
+            <div className="picture-header">
                 <div className="pokemon-id">
                     {pokemonFullData ? `#${pokemonFullData.id}` : "Loading ID..."}
                 </div>

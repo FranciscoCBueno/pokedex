@@ -47,6 +47,11 @@
     padding: 0.5rem;
 }
 
+.lists {
+    display: flex;
+    gap: 1rem;
+}
+
 @media screen and (max-width: 1420px) {
     .pokemon-stats {
         width: 100%;

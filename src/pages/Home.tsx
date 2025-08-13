@@ -5,6 +5,7 @@ import { PokemonCard } from "../components/Home/PokemonCard";
 import { useNavigate } from "react-router-dom";
 import { PokemonContext } from "../context/PokemonContext";
 import search from "../assets/search.svg";
+import pokedex from "../assets/pokedex.png";
 
 export function Home() {
     const { pokemonList, setPokemonList, searchQuery, setSearchQuery } = useContext(PokemonContext);
@@ -79,10 +80,34 @@ export function Home() {
 
     return (
         <div className="home-container">
+            <header className="header">
+                <div className="header-text">
+                    <div className="welcome-text">
+                        <h1 className="title" id="welcome-title">Welcome to the Pokédex</h1>
+                        <div className="paragraphs-container" id="welcome-paragraphs">
+                            <hr />
+                            <p>Click on any card on the list to see more about that Pokémon</p>
+                            <p>Check the list to see them all, or search for your favorite one</p>
+                            <p>Use the filter to personalize the list</p>
+                        </div>
+                    </div>
+                    <div className="about-text">
+                        <h2 className="title" id="about-title">This is a fan project</h2>
+                        <div className="paragraphs-container" id="about-paragraphs">
+                            <hr />
+                            <p>It is not affiliated with the official Pokémon brand</p>
+                            <p>Made using React and <a href="https://pokeapi.co/" className="link" id="pokeapi-link" target="_blank" rel="noreferrer">PokéAPI</a></p>
+                            <p>Check out the source code <a href="https://github.com/FranciscoCBueno/pokedex" 
+                            className="link" id="github-link" target="_blank" rel="noreferrer">here</a></p>
+                        </div>
+                    </div>
+                </div>
+                <img src={pokedex} alt="pokedex" className="pokedex-image" />
+            </header>
             <div className="search">
-                <img className="search-icon" src={search} alt="search icon" />
                 <input type="text" className="search-bar" name="search" placeholder="Look up by name or id" 
                 value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
+                <img className="search-icon" src={search} alt="search icon" />
             </div>
             <div className="card_list">
                 {pokemonList.length > 0 ? (
@@ -92,7 +117,7 @@ export function Home() {
                 ) : (<p>Loading Pokedex...</p>)}
                 <div ref={sentinelRef} style={{ height: 1 }} />
             </div>
-            {isLoading && <p>Loading more...</p>}
+            {isLoading && <p className="loading-text">Loading more...</p>}
         </div>
     );
 }
