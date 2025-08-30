@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { PokemonContext } from "../context/PokemonContext";
 import search from "../assets/search.svg";
 import pokedex from "../assets/pokedex.png";
+import alert from "../assets/alert.svg";
 
 export function Home() {
     const { pokemonList, setPokemonList, searchQuery, setSearchQuery } = useContext(PokemonContext);
@@ -13,7 +14,9 @@ export function Home() {
     const [offset, setOffset] = useState(0);
     const [hasMore, setHasMore] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
+    const [searchErrorMsg, setSearchErrorMsg] = useState("");
     const sentinelRef = useRef<HTMLDivElement | null>(null);
+    const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
     const fetchPokemonData = useCallback(async (currentOffset: number) => {
         if (isLoading || !hasMore) return;
@@ -52,6 +55,11 @@ export function Home() {
         }
     }, [isLoading, hasMore, setPokemonList]);
 
+    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(event.target.value);
+        setSearchErrorMsg("");
+    };
+
     useEffect(() => {
         if (pokemonList.length === 0) {
             fetchPokemonData(0);
@@ -59,7 +67,7 @@ export function Home() {
     });
 
     useEffect(() => {
-        if (!hasMore) return;
+        if (!hasMore || searchQuery) return;
         
         const observer = new IntersectionObserver(
             (entries) => {
@@ -76,7 +84,47 @@ export function Home() {
         return () => {
             if (currentSentinel) observer.unobserve(currentSentinel);
         };
-    }, [hasMore, isLoading, offset, fetchPokemonData]);
+    }, [hasMore, isLoading, offset, fetchPokemonData, searchQuery]);
+
+    useEffect(() => {
+        if (!searchQuery) return;
+
+        if (debounceTimeout.current) {
+            clearTimeout(debounceTimeout.current);
+        }
+
+        debounceTimeout.current = setTimeout(() => {
+            const found = pokemonList.some(
+                (pokemon) =>
+                    pokemon.name.toLowerCase() === searchQuery.toLowerCase() ||
+                    pokemon.id.toString() === searchQuery
+            );
+            if (found) return;
+
+            const fetchSearchedPokemon = async () => {
+                try {
+                    const response = await axios.get(
+                        `https://pokeapi.co/api/v2/pokemon/${searchQuery.toLowerCase()}`
+                    );
+                    const newPokemon = response.data;
+                    setPokemonList((prevList) => {
+                        if (prevList.some((p) => p.id === newPokemon.id)) return prevList;
+                        return [...prevList, newPokemon].sort((a, b) => a.id - b.id);
+                    });
+                    setSearchErrorMsg("");
+                } catch (error) {
+                    setSearchErrorMsg("No Pokémon found with that name or ID.");
+                }
+            };
+            fetchSearchedPokemon();
+        }, 400);
+
+        return () => {
+            if (debounceTimeout.current) {
+                clearTimeout(debounceTimeout.current);
+            }
+        };
+    }, [searchQuery, pokemonList, setPokemonList]);
 
     return (
         <div className="home-container">
@@ -96,7 +144,8 @@ export function Home() {
                         <div className="paragraphs-container" id="about-paragraphs">
                             <hr />
                             <p>It is not affiliated with the official Pokémon brand</p>
-                            <p>Made using React and <a href="https://pokeapi.co/" className="link" id="pokeapi-link" target="_blank" rel="noreferrer">PokéAPI</a></p>
+                            <p>Made using <a href="https://react.dev/" className="link" id="react-link" target="_blank" rel="noreferrer">React</a> and <a 
+                                href="https://pokeapi.co/" className="link" id="pokeapi-link" target="_blank" rel="noreferrer">PokéAPI</a></p>
                             <p>Check out the source code <a href="https://github.com/FranciscoCBueno/pokedex" 
                             className="link" id="github-link" target="_blank" rel="noreferrer">here</a></p>
                         </div>
@@ -105,15 +154,30 @@ export function Home() {
                 <img src={pokedex} alt="pokedex" className="pokedex-image" />
             </header>
             <div className="search">
-                <input type="text" className="search-bar" name="search" placeholder="Look up by name or id" 
-                value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
                 <img className="search-icon" src={search} alt="search icon" />
+                <input type="text" className="search-bar" name="search" placeholder="Look up by name or id" 
+                value={searchQuery} onChange={handleSearch}/>
             </div>
+            {((searchErrorMsg !== "") && (searchQuery !== "")) && (
+                <div className="search-error">
+                    <div className="search-error-text">
+                        <img src={alert} alt="error alert icon" className="alert-icon"/>
+                        {searchErrorMsg}
+                    </div>
+                    <p className="search-error-note">Note: PokéAPI does not support search by partial names.</p>
+                </div>
+            )}
             <div className="card_list">
                 {pokemonList.length > 0 ? (
-                    pokemonList.map((pokemon) => (
-                        <PokemonCard key={pokemon.id} pokemonData={pokemon} onClick={() => navigate(`/pokemon/${pokemon.id}`)}/>
-                    ))
+                    pokemonList
+                        .filter((pokemon) =>
+                            searchQuery === "" ||
+                            pokemon.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            pokemon.id.toString() === searchQuery
+                        )
+                        .map((pokemon) => (
+                            <PokemonCard key={pokemon.id} pokemonData={pokemon} onClick={() => navigate(`/pokemon/${pokemon.id}`)}/>
+                        ))
                 ) : (<p>Loading Pokedex...</p>)}
                 <div ref={sentinelRef} style={{ height: 1 }} />
             </div>
