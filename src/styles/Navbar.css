@@ -4,6 +4,29 @@
 }
 
 .navbar-container {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    justify-content: space-between;
     background-color: #cc0000;
     height: 4rem;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 10px;
+    padding: 0 1rem;
+    box-sizing: border-box;
+    background-color: #ba0000;
+    border: solid 1px #990000;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.btn:hover {
+    background-color: #dd3333;
+    cursor: pointer;
 }

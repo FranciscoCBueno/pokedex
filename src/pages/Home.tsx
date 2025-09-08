@@ -134,12 +134,14 @@ export function Home() {
                         <h1 className="title" id="welcome-title">Welcome to the Pokédex</h1>
                         <div className="paragraphs-container" id="welcome-paragraphs">
                             <hr />
-                            <p>Click on any card on the list to see more about that Pokémon</p>
-                            <p>Check the list to see them all, or search for your favorite one</p>
+                            <p>Click on any Pokémon card on the list to see more about it</p>
+                            <p>See the complete list or search for a specific one</p>
                             <p>Use the filter to personalize the list</p>
+                            <p>This is not an official Pokémon product</p>
+                            <p>Enjoy your stay! :)</p>
                         </div>
                     </div>
-                    <div className="about-text">
+                    {/* <div className="about-text">
                         <h2 className="title" id="about-title">This is a fan project</h2>
                         <div className="paragraphs-container" id="about-paragraphs">
                             <hr />
@@ -149,7 +151,7 @@ export function Home() {
                             <p>Check out the source code <a href="https://github.com/FranciscoCBueno/pokedex" 
                             className="link" id="github-link" target="_blank" rel="noreferrer">here</a></p>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <img src={pokedex} alt="pokedex" className="pokedex-image" />
             </header>

@@ -33,6 +33,7 @@ Requirements:
 ## Current features
 
 - National Pokédex list:
+  - Search bar to look up by name or by id
   - Official sprites
   - Legendary or Mythical indicator
   - Each card is colored with it's Pokémon's colors
@@ -54,7 +55,6 @@ Detailed page for each Pokémon:
 
 ## Features to be fixed/completed
 
-- Search bar
 - Full responsiveness
 - Navbar
 - Encounter locations list
