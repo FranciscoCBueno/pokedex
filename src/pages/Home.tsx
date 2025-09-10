@@ -141,17 +141,6 @@ export function Home() {
                             <p>Enjoy your stay! :)</p>
                         </div>
                     </div>
-                    {/* <div className="about-text">
-                        <h2 className="title" id="about-title">This is a fan project</h2>
-                        <div className="paragraphs-container" id="about-paragraphs">
-                            <hr />
-                            <p>It is not affiliated with the official Pokémon brand</p>
-                            <p>Made using <a href="https://react.dev/" className="link" id="react-link" target="_blank" rel="noreferrer">React</a> and <a 
-                                href="https://pokeapi.co/" className="link" id="pokeapi-link" target="_blank" rel="noreferrer">PokéAPI</a></p>
-                            <p>Check out the source code <a href="https://github.com/FranciscoCBueno/pokedex" 
-                            className="link" id="github-link" target="_blank" rel="noreferrer">here</a></p>
-                        </div>
-                    </div> */}
                 </div>
                 <img src={pokedex} alt="pokedex" className="pokedex-image" />
             </header>

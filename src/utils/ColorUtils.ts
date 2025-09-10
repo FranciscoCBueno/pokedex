@@ -66,10 +66,14 @@ export class ColorUtils {
         white: '#FFFFFF',
         'black-2': '#000000',
         'white-2': '#FFFFFF',
+        'omega-ruby': '#FF2255',
+        'alpha-sapphire': '#1EB0FF',
         x : '#5500FF',
         y : '#990000',
         sun: '#FFA500',
         moon: '#8A2BE2',
+        'ultra-sun': '#FF8500',
+        'ultra-moon': '#8A2BA0',
         sword: '#C0C0C0',
         shield: '#707070',
         scarlet: '#FF6347',
@@ -93,6 +97,9 @@ export class ColorUtils {
     getGameColor = (game: keyof typeof this.gameColors) => {
         if (this.gameColors[game] === "#000000") {
             return {backgroundColor: this.gameColors[game], color: '#FFF'};
+        }
+        if (this.gameColors[game] === "#FFFFFF") {
+            return {backgroundColor: this.gameColors[game], border: '2px solid black'};
         }
         return {backgroundColor: this.gameColors[game] || '#FFF'};
     }
