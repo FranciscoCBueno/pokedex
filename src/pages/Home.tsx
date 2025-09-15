@@ -7,9 +7,10 @@ import { PokemonContext } from "../context/PokemonContext";
 import search from "../assets/search.svg";
 import pokedex from "../assets/pokedex.png";
 import alert from "../assets/alert.svg";
+import filter from "../assets/filter.svg";
 
 export function Home() {
-    const { pokemonList, setPokemonList, searchQuery, setSearchQuery } = useContext(PokemonContext);
+    const { pokemonList, setPokemonList, searchQuery, setSearchQuery, filters, setFilters } = useContext(PokemonContext);
     const navigate = useNavigate();
     const [offset, setOffset] = useState(0);
     const [hasMore, setHasMore] = useState(true);
@@ -148,6 +149,28 @@ export function Home() {
                 <img className="search-icon" src={search} alt="search icon" />
                 <input type="text" className="search-bar" name="search" placeholder="Look up by name or id" 
                 value={searchQuery} onChange={handleSearch}/>
+                <img className="filter-icon" src={filter} alt="filter icon" />
+                <select name="filter" id="type-filter" className="filter" value={filters.type || "all"} onChange={e => setFilters({ ...filters, type: e.target.value })}>
+                    <option value="all">All Types</option>
+                    <option value="normal">Normal</option>
+                    <option value="fire">Fire</option>
+                    <option value="water">Water</option>
+                    <option value="electric">Electric</option>
+                    <option value="grass">Grass</option>
+                    <option value="ice">Ice</option>
+                    <option value="fighting">Fighting</option>
+                    <option value="poison">Poison</option>
+                    <option value="ground">Ground</option>
+                    <option value="flying">Flying</option>
+                    <option value="psychic">Psychic</option>
+                    <option value="bug">Bug</option>
+                    <option value="rock">Rock</option>
+                    <option value="ghost">Ghost</option>
+                    <option value="dragon">Dragon</option>
+                    <option value="dark">Dark</option>
+                    <option value="steel">Steel</option>
+                    <option value="fairy">Fairy</option>
+                </select>
             </div>
             {((searchErrorMsg !== "") && (searchQuery !== "")) && (
                 <div className="search-error">
@@ -161,11 +184,18 @@ export function Home() {
             <div className="card_list">
                 {pokemonList.length > 0 ? (
                     pokemonList
-                        .filter((pokemon) =>
-                            searchQuery === "" ||
-                            pokemon.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            pokemon.id.toString() === searchQuery
-                        )
+                        .filter((pokemon) => {
+                            const matchesSearch =
+                                searchQuery === "" ||
+                                pokemon.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                pokemon.id.toString() === searchQuery;
+                            const selectedType = filters.type || "all";
+                            const matchesType =
+                                selectedType === "all" ||
+                                pokemon.types.some((t: any) => t.type.name === selectedType);
+
+                            return matchesSearch && matchesType;
+                        })
                         .map((pokemon) => (
                             <PokemonCard key={pokemon.id} pokemonData={pokemon} onClick={() => navigate(`/pokemon/${pokemon.id}`)}/>
                         ))
