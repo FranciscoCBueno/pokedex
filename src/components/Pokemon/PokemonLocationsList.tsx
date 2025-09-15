@@ -46,7 +46,7 @@ export function PokemonLocationsList() {
         <div className="locations-list">
             <div className="locations-header">
                 <h2 className="locations-list-title">Locations</h2>
-                <p>Note: The chance percentages have very weird spreads and sometimes seem multiplied</p>
+                <p>Note: The chance percentages have weird spreads and it may seem like some are repeated</p>
             </div>
             {locations.length > 0 ? (
                 locations.slice().sort((locA, locB) => {
@@ -66,7 +66,7 @@ export function PokemonLocationsList() {
                                     <p className="version-name" style={getGameColor(detail.version.name as keyof ColorUtils['gameColors'])}>
                                         {(detail.version.name.replace(/-/g, " ")).toUpperCase()}
                                     </p>
-                                    <p className="version-rarity">Total Chance: {detail.max_chance}%</p>
+                                    <p className="version-rarity">Encounter Potential: {detail.max_chance}</p>
                                 </div>
                                 <div className="encounter-detail-container">
                                     {detail?.encounter_details?.map((encounter, eIdx) => (

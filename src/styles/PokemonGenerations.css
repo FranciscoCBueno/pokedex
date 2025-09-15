@@ -30,18 +30,8 @@
     background-color: #c0c0c0;
     border-radius: 5px;
     overflow-y: auto;
-    scrollbar-width: thin;
+    scrollbar-width: auto;
     scrollbar-color: #909090 #c0c0c0;
-}
-
-.game-indices::-webkit-scrollbar {
-    width: 8px;
-    background: #b0b0b0;
-}
-
-.game-indices::-webkit-scrollbar-thumb {
-    background: #b0b0b0;
-    border-radius: 4px;
 }
 
 .game-item {

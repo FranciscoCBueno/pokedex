@@ -75,8 +75,8 @@ export function Pokemon() {
                 </div>
             </div>
             <div className="lists">
-                <PokemonLocationsList/>
                 <PokemonMoveList/>
+                <PokemonLocationsList/>
             </div>
         </div>
     );

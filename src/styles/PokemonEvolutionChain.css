@@ -16,18 +16,8 @@
     gap: 1rem;
     max-height: 720px;
     overflow-y: auto;
-    scrollbar-width: thin;
+    scrollbar-width: auto;
     scrollbar-color: #909090 #c9c9c9;
-}
-
-.pokemon-evolution-chain::-webkit-scrollbar {
-    width: 8px;
-    background: #b0b0b0;
-}
-
-.pokemon-evolution-chain::-webkit-scrollbar-thumb {
-    background: #b0b0b0;
-    border-radius: 4px;
 }
 
 .evolution-subchain {

@@ -69,13 +69,28 @@ export function PokemonMoveList() {
                     <div className="move-item" key={move.name}>
                         <span className="move-header">
                             <span className="move-name">{move.name.toUpperCase()}</span>
+
                             <span className="move-header-separator">-</span>
+
                             <span className="pokemon-type" style={getTypeColor(move.type.name as keyof ColorUtils['typeColors'])}>
                                 {move.type.name.toUpperCase()}
                             </span>
+
                             <span className="move-header-separator">-</span>
+
                             <span className="move-damage-class">{move.damage_class ? 
                             move.damage_class.name.charAt(0).toUpperCase() + move.damage_class.name.slice(1) : "N/A"}</span>
+
+                            <span className="move-header-separator">-</span>
+
+                            <span className="learned-by">{pokemonFullData.moves.find((m: any) => m.move.name === move.name) ?
+                                `Level ${pokemonFullData.moves.find((m: any) => m.move.name === move.name)?.version_group_details[0]?.level_learned_at}` : "N/A"} 
+
+                                <span className="move-header-separator">-</span>
+
+                                {pokemonFullData.moves.find((m: any) => m.move.name === move.name) ? 
+                                `Method: ${pokemonFullData.moves.find((m: any) => m.move.name === move.name)?.version_group_details[0]?.move_learn_method.name}` : "N/A"}
+                             </span>
                         </span>
                         <div className="sections">
                             <div className="section" id="section-1">
