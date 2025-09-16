@@ -75,12 +75,6 @@ export function Home() {
     }, [filters.pokedexId, setPokemonList]);
 
     useEffect(() => {
-        if (pokemonList.length === 0 && allNames.length > 0 && !isLoading) {
-            fetchPokemonBatch();
-        }
-    }, [allNames, pokemonList.length, fetchPokemonBatch, isLoading]);
-
-    useEffect(() => {
         if (!hasMore || searchQuery) return;
         const observer = new IntersectionObserver(
             (entries) => {
