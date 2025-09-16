@@ -26,14 +26,17 @@ Requirements:
 - Git
 
 1. Clone the repository
-2. Open a terminal inside the "src" folder
+2. Open a terminal inside the cloned folder
 3. Run the command "npm i" or "npm install"
 4. Run the command "npm start" to start the application on a browser tab
 
 ## Current features
 
+- Pokémon randomizer
+
 - National Pokédex list:
   - Search bar to look up by name or by id
+  - Filter by type and region
   - Official sprites
   - Legendary or Mythical indicator
   - Each card is colored with it's Pokémon's colors
@@ -52,20 +55,11 @@ Detailed page for each Pokémon:
   - Abilities
   - Original generations and game indices
   - Moves list
+  - List of locations found
 
 ## Features to be fixed/completed
 
 - Full responsiveness
-- Navbar
-- Encounter locations list
-
-## Planned features
-
-- Locations found per game
-- Filters for the Pokémon list:
-  - Type
-  - Game
-  - Generation
 
 ## Planned implementations
 
@@ -76,4 +70,4 @@ Detailed page for each Pokémon:
 
 - Usage of good practices
 - Code readability and organization
-- Better understanding and implementation of OOP
+- Better understanding and implementation of OOP and web development

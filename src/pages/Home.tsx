@@ -14,47 +14,39 @@ export function Home() {
     const navigate = useNavigate();
     const [offset, setOffset] = useState(0);
     const [hasMore, setHasMore] = useState(true);
+    const [allNames, setAllNames] = useState<string[]>([]);
+    const batchSize = 20;
     const [isLoading, setIsLoading] = useState(false);
     const [searchErrorMsg, setSearchErrorMsg] = useState("");
     const sentinelRef = useRef<HTMLDivElement | null>(null);
-    const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
-    const fetchPokemonData = useCallback(async (currentOffset: number) => {
+    const fetchPokemonBatch = useCallback(async () => {
         if (isLoading || !hasMore) return;
         setIsLoading(true);
         try {
-            const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/?offset=${currentOffset}&limit=20`);
-            const results = response.data.results;
-            
+            const nextNames = allNames.slice(offset, offset + batchSize);
             const pokemonData = await Promise.all(
-                results.map(async (pokemon: {name: string, url: string}) => {
-                    if (!/\/(\d{5,})\/$/.test(pokemon.url)) {
-                        const pokedata = await axios.get(pokemon.url);
-                        return pokedata.data;
+                nextNames.map(async (name: string) => {
+                    try {
+                        const pokeRes = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
+                        return pokeRes.data;
+                    } catch {
+                        return null;
                     }
-                    return null;
                 })
             );
-            
-            const pokemonDataNotNull = pokemonData.filter(Boolean);
-            setPokemonList(prevList => {
-                const mergedList = [...prevList];
-                pokemonDataNotNull.forEach(newPokemon => {
-                    if (!mergedList.some(p => p.id === newPokemon.id)) {
-                        mergedList.push(newPokemon);
-                    }
-                });
-                return mergedList.sort((a, b) => a.id - b.id);
-            });
-            
-            setOffset(currentOffset + 20);
-            if (results.length < 20) setHasMore(false);
+            setPokemonList(prevList => [
+                ...prevList,
+                ...pokemonData.filter(Boolean)
+            ]);
+            setOffset(prev => prev + batchSize);
+            setHasMore(offset + batchSize < allNames.length);
         } catch (error) {
-            console.error("Error fetching Pokemon data:", error);
+            console.error("Error fetching batch:", error);
         } finally {
             setIsLoading(false);
         }
-    }, [isLoading, hasMore, setPokemonList]);
+    }, [allNames, offset, hasMore, isLoading, setPokemonList]);
 
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(event.target.value);
@@ -62,70 +54,48 @@ export function Home() {
     };
 
     useEffect(() => {
-        if (pokemonList.length === 0) {
-            fetchPokemonData(0);
+        const fetchPokedex = async () => {
+            setIsLoading(true);
+            try {
+                const pokedexId = filters.pokedexId || "1";
+                const response = await axios.get(`https://pokeapi.co/api/v2/pokedex/${pokedexId}/`);
+                const entries = response.data.pokemon_entries;
+                const names = entries.map((entry: any) => entry.pokemon_species.name);
+                setAllNames(names);
+                setOffset(0);
+                setHasMore(names.length > 0);
+                setPokemonList([]);
+            } catch (error) {
+                console.error("Error fetching Pokédex:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchPokedex();
+    }, [filters.pokedexId, setPokemonList]);
+
+    useEffect(() => {
+        if (pokemonList.length === 0 && allNames.length > 0 && !isLoading) {
+            fetchPokemonBatch();
         }
-    });
+    }, [allNames, pokemonList.length, fetchPokemonBatch, isLoading]);
 
     useEffect(() => {
         if (!hasMore || searchQuery) return;
-        
         const observer = new IntersectionObserver(
             (entries) => {
                 if (entries[0].isIntersecting && !isLoading && hasMore) {
-                    fetchPokemonData(offset);
+                    fetchPokemonBatch();
                 }
             },
             { rootMargin: "200px" }
         );
-        
         const currentSentinel = sentinelRef.current;
         if (currentSentinel) observer.observe(currentSentinel);
-        
         return () => {
             if (currentSentinel) observer.unobserve(currentSentinel);
         };
-    }, [hasMore, isLoading, offset, fetchPokemonData, searchQuery]);
-
-    useEffect(() => {
-        if (!searchQuery) return;
-
-        if (debounceTimeout.current) {
-            clearTimeout(debounceTimeout.current);
-        }
-
-        debounceTimeout.current = setTimeout(() => {
-            const found = pokemonList.some(
-                (pokemon) =>
-                    pokemon.name.toLowerCase() === searchQuery.toLowerCase() ||
-                    pokemon.id.toString() === searchQuery
-            );
-            if (found) return;
-
-            const fetchSearchedPokemon = async () => {
-                try {
-                    const response = await axios.get(
-                        `https://pokeapi.co/api/v2/pokemon/${searchQuery.toLowerCase()}`
-                    );
-                    const newPokemon = response.data;
-                    setPokemonList((prevList) => {
-                        if (prevList.some((p) => p.id === newPokemon.id)) return prevList;
-                        return [...prevList, newPokemon].sort((a, b) => a.id - b.id);
-                    });
-                    setSearchErrorMsg("");
-                } catch (error) {
-                    setSearchErrorMsg("No Pokémon found with that name or ID.");
-                }
-            };
-            fetchSearchedPokemon();
-        }, 400);
-
-        return () => {
-            if (debounceTimeout.current) {
-                clearTimeout(debounceTimeout.current);
-            }
-        };
-    }, [searchQuery, pokemonList, setPokemonList]);
+    }, [hasMore, isLoading, fetchPokemonBatch, searchQuery]);
 
     return (
         <div className="home-container">
@@ -150,7 +120,8 @@ export function Home() {
                 <input type="text" className="search-bar" name="search" placeholder="Look up by name or id" 
                 value={searchQuery} onChange={handleSearch}/>
                 <img className="filter-icon" src={filter} alt="filter icon" />
-                <select name="filter" id="type-filter" className="filter" value={filters.type || "all"} onChange={e => setFilters({ ...filters, type: e.target.value })}>
+                <select name="filter" id="type-filter" className="filter" value={filters.type || "all"} 
+                onChange={e => setFilters({ ...filters, type: e.target.value })}>
                     <option value="all">All Types</option>
                     <option value="normal">Normal</option>
                     <option value="fire">Fire</option>
@@ -170,6 +141,26 @@ export function Home() {
                     <option value="dark">Dark</option>
                     <option value="steel">Steel</option>
                     <option value="fairy">Fairy</option>
+                </select>
+                <select name="generation-filter" id="generation-filter" className="filter" value={filters.pokedexId || "1"}
+                onChange={e => setFilters({ ...filters, pokedexId: e.target.value })}>
+                    <option value="1">National (All)</option>
+                    <option value="2">Kanto (Red, Blue, Yellow, FireRed, LeafGreen)</option>
+                    <option value="3">Johto (Gold, Silver, Crystal)</option>
+                    <option value="4">Hoenn (Ruby, Sapphire, Emerald)</option>
+                    <option value="5">Sinnoh (Diamond/Pearl)</option>
+                    <option value="6">Sinnoh (Platinum)</option>
+                    <option value="7">Johto (HeartGold/SoulSilver)</option>
+                    <option value="8">Unova (Black/White)</option>
+                    <option value="9">Unova (Black2/White2)</option>
+                    <option value="12">Central Kalos (X/Y)</option>
+                    <option value="13">Coastal Kalos (X/Y)</option>
+                    <option value="14">Mountain Kalos (X/Y)</option>
+                    <option value="15">Hoenn (Omega Ruby/Alpha Sapphire)</option>
+                    <option value="16">Alola (Sun/Moon)</option>
+                    <option value="21">Alola (Ultra Sun/Ultra Moon)</option>
+                    <option value="27">Galar (Sword/Shield)</option>
+                    <option value="31">Paldea (Scarlet/Violet)</option>
                 </select>
             </div>
             {((searchErrorMsg !== "") && (searchQuery !== "")) && (
